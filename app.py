@@ -7,7 +7,7 @@ import threading # For thread-safe file access
 # --- Configuration ---
 # It's better practice to set HF_API_TOKEN as an environment variable.
 # For local testing, you can hardcode it, but be careful with version control.
-HF_API_TOKEN = os.environ.get("HF_API_TOKEN", "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") # Your token
+HF_API_TOKEN = os.environ.get("HF_API_TOKEN", "YOUR_TOKEN") # Your token
 MODEL_API_URL = "https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-xl-base-1.0"
 headers = {"Authorization": f"Bearer {HF_API_TOKEN}"}
 
