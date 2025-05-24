@@ -241,7 +241,8 @@
             <h1 class="main-title">MEMEKING!</h1>
             <h2 class="section-title">Get Your Crayons Ready!</h2>
             <p>This is <strong>MEMEKING ($MKKG - *example*)</strong>, the funnest coin for meme creators! <br>No boring charts, just pure meme magic!</p>
-            <button id="buyCoinBtn" class="crayon-button" onclick="window.open('https://pump.fun/coin/GT3CrepnC7YSB6quSBDYH9gMr7GYcKgUc4HzEoBxpump')">
+            <!-- UPDATED PUMP.FUN LINK BELOW -->
+            <button id="buyCoinBtn" class="crayon-button" onclick="window.open('https://pump.fun/GT3CrepnC7YSB6quSBDYH9gMr7GYcKgUc4HzEoBxpump', '_blank')">
                 <span class="icon icon-rocket"></span> Grab $MKKG on Pump.fun!
             </button>
             <p style="font-size: 0.9em; margin-top:10px;"><em>(V1.0 - More awesome stuff coming soon!)</em></p>
@@ -293,9 +294,7 @@
         </section>
     </div> <!-- End of page-wrapper -->
 
-    <footer>
-        © 2024 Pillow Gold Developers LLC. All rights reserved.
-    </footer>
+    
 
     <script>
         // --- DOM Elements ---
@@ -334,21 +333,21 @@
             generateBtn.disabled = true;
             clearBtn.disabled = true;
             generateBtn.innerHTML = '<span class="icon icon-wand"></span> Drawing...';
-            console.log("MEME COUNT JS: Calling /generate-meme"); // DEBUG
+            // console.log("MEME COUNT JS: Calling /generate-meme"); // DEBUG
             try {
                 const response = await fetch('/generate-meme', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ prompt: prompt })
                 });
-                console.log("MEME COUNT JS: /generate-meme response status:", response.status); // DEBUG
+                // console.log("MEME COUNT JS: /generate-meme response status:", response.status); // DEBUG
                 if (response.ok) {
                     const imageBlob = await response.blob();
                     const imageUrl = URL.createObjectURL(imageBlob);
                     memeImage.src = imageUrl;
                     memeImage.style.display = 'block';
                     downloadBtn.style.display = 'inline-flex';
-                    console.log("MEME COUNT JS: Meme generated, now fetching count."); // DEBUG
+                    // console.log("MEME COUNT JS: Meme generated, now fetching count."); // DEBUG
                     fetchMemeCount(); // Update count after successful generation
                 } else {
                     let errorMsg = "Uh oh! The AI crayons are stuck.";
@@ -361,7 +360,7 @@
                     displayMessage(errorMsg, 'error');
                 }
             } catch (error) {
-                console.error('MEME COUNT JS: Network or fetch error during meme generation:', error);
+                // console.error('MEME COUNT JS: Network or fetch error during meme generation:', error);
                 displayMessage("Oops! Network scribbles. Check connection.", 'error');
             } finally {
                 loader.style.display = 'none';
@@ -405,25 +404,25 @@
         }
 
         async function fetchMemeCount() {
-            console.log("MEME COUNT JS: Attempting to fetch meme count..."); // DEBUG
+            // console.log("MEME COUNT JS: Attempting to fetch meme count..."); // DEBUG
             try {
                 const response = await fetch('/get-meme-count');
-                console.log("MEME COUNT JS: Fetch /get-meme-count response status:", response.status); // DEBUG
+                // console.log("MEME COUNT JS: Fetch /get-meme-count response status:", response.status); // DEBUG
                 if (response.ok) {
                     const data = await response.json();
-                    console.log("MEME COUNT JS: Fetched data:", data); // DEBUG
+                    // console.log("MEME COUNT JS: Fetched data:", data); // DEBUG
                     if (memeCounterSpan) {
                         memeCounterSpan.textContent = data.count;
-                        console.log("MEME COUNT JS: Updated counter display to:", data.count); // DEBUG
+                        // console.log("MEME COUNT JS: Updated counter display to:", data.count); // DEBUG
                     } else {
-                        console.error("MEME COUNT JS: memeCounterSpan element not found!"); // DEBUG
+                        // console.error("MEME COUNT JS: memeCounterSpan element not found!"); // DEBUG
                     }
                 } else {
                     if (memeCounterSpan) memeCounterSpan.textContent = 'N/A';
-                    console.error("MEME COUNT JS: Fetch /get-meme-count response not OK."); // DEBUG
+                    // console.error("MEME COUNT JS: Fetch /get-meme-count response not OK."); // DEBUG
                 }
             } catch (error) {
-                console.error("MEME COUNT JS: Failed to fetch meme count:", error); // DEBUG
+                // console.error("MEME COUNT JS: Failed to fetch meme count:", error); // DEBUG
                 if (memeCounterSpan) memeCounterSpan.textContent = 'Error';
             }
         }
@@ -433,14 +432,39 @@
             donationWalletInput.select();
             donationWalletInput.setSelectionRange(0, 99999); // For mobile devices
             try {
-                document.execCommand('copy');
-                const originalText = copyWalletBtn.innerHTML;
-                copyWalletBtn.innerHTML = '<span class="icon icon-copy"></span> Copied!';
-                setTimeout(() => {
-                    copyWalletBtn.innerHTML = originalText;
-                }, 2000);
-            } catch (err) {
-                alert('Oops, unable to copy. Please copy manually!');
+                navigator.clipboard.writeText(donationWalletInput.value).then(() => {
+                    const originalText = copyWalletBtn.innerHTML;
+                    copyWalletBtn.innerHTML = '<span class="icon icon-copy"></span> Copied!';
+                    setTimeout(() => {
+                        copyWalletBtn.innerHTML = originalText;
+                    }, 2000);
+                }).catch(err => {
+                    console.error('Failed to copy wallet address with navigator.clipboard: ', err);
+                    // Fallback for older browsers or if navigator.clipboard fails
+                    try {
+                        document.execCommand('copy');
+                        const originalText = copyWalletBtn.innerHTML;
+                        copyWalletBtn.innerHTML = '<span class="icon icon-copy"></span> Copied!';
+                        setTimeout(() => {
+                            copyWalletBtn.innerHTML = originalText;
+                        }, 2000);
+                    } catch (errFallback) {
+                        alert('Oops, unable to copy. Please copy manually!');
+                        console.error('Fallback copy failed: ', errFallback);
+                    }
+                });
+            } catch (err) { // Catch if navigator.clipboard itself is not defined (very old browsers)
+                 try {
+                    document.execCommand('copy');
+                    const originalText = copyWalletBtn.innerHTML;
+                    copyWalletBtn.innerHTML = '<span class="icon icon-copy"></span> Copied!';
+                    setTimeout(() => {
+                        copyWalletBtn.innerHTML = originalText;
+                    }, 2000);
+                } catch (errFallback) {
+                    alert('Oops, unable to copy. Please copy manually!');
+                    console.error('Fallback copy failed: ', errFallback);
+                }
             }
         }
 
