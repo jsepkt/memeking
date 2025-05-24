@@ -6,32 +6,31 @@ import threading # For thread-safe file access
 import sys # For exiting if critical env var is missing
 
 # --- Configuration ---
-HF_API_TOKEN = os.environ.get("HF_API_TOKEN") # Get token ONLY from environment variable
+HF_API_TOKEN = os.environ.get("HF_API_TOKEN") # Get token ONLY from Replit Secrets
 
 if not HF_API_TOKEN:
-    # This will be visible in Render's logs if the env var isn't set
-    print("CRITICAL ERROR: Hugging Face API Token (HF_API_TOKEN) environment variable not found.")
-    # Optionally, you can make the app exit if the token isn't set,
-    # as it's critical for functionality.
-    # sys.exit("Exiting: HF_API_TOKEN is not set. The application cannot run.")
-    # For now, we'll let it proceed, but API calls will fail.
-    # On Render, ensure HF_API_TOKEN is set in the environment variables for the service.
+    print("=" * 70)
+    print("CRITICAL WARNING: Hugging Face API Token (HF_API_TOKEN) is NOT SET in Replit Secrets.")
+    print("Please go to the 'Secrets' tab in your Replit (padlock icon on the left) and add:")
+    print("Key: HF_API_TOKEN")
+    print("Value: your_actual_hf_token_here (e.g., hf_xxxx...)")
+    print("Meme generation will FAIL until this is set.")
+    print("=" * 70)
+    # You might choose to exit, but Replit might just keep restarting.
+    # Letting it run allows you to see the console message.
+    # sys.exit("Exiting: HF_API_TOKEN is not set. The application cannot run without it.")
+
 
 MODEL_API_URL = "https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-xl-base-1.0"
-# Ensure headers are only prepared if HF_API_TOKEN is available
+# Headers are prepared only if HF_API_TOKEN is available
 headers = {"Authorization": f"Bearer {HF_API_TOKEN}"} if HF_API_TOKEN else {}
 
 
 # --- Meme Counter Setup ---
-# Check if running on Render and using a persistent disk for the counter
-RENDER_DISK_MOUNT_PATH = "/mnt/data" # Standard Render disk mount path
-if os.path.exists(RENDER_DISK_MOUNT_PATH) and os.access(RENDER_DISK_MOUNT_PATH, os.W_OK):
-    COUNT_FILE_DIR = RENDER_DISK_MOUNT_PATH
-    print(f"MEME COUNT (app.py): Using persistent disk for count file at {COUNT_FILE_DIR}")
-else:
-    COUNT_FILE_DIR = "." # Current directory (ephemeral for Render web service)
-    print(f"MEME COUNT (app.py): Using local directory for count file (will be ephemeral on Render without disk).")
-
+# Replit's filesystem is generally persistent for the lifetime of the Repl,
+# but major infrastructure changes or if the Repl is forked/copied might affect it.
+# For simple V1, a local file is okay. For more robust, Replit Database could be used.
+COUNT_FILE_DIR = "." # Store in the current directory within the Repl.
 COUNT_FILE = os.path.join(COUNT_FILE_DIR, "meme_count.txt")
 
 count_lock = threading.Lock()
@@ -47,29 +46,29 @@ def get_meme_count():
 def increment_meme_count():
     with count_lock:
         current_val = get_meme_count()
-        print(f"MEME COUNT (app.py): Current value before increment: {current_val}") # DEBUG
+        # print(f"MEME COUNT (app.py): Current value before increment: {current_val}")
         count = current_val + 1
         try:
             with open(COUNT_FILE, "w") as f:
                 f.write(str(count))
-            print(f"MEME COUNT (app.py): Incremented and saved. New count: {count}") # DEBUG
+            # print(f"MEME COUNT (app.py): Incremented and saved. New count: {count}")
         except IOError as e:
-            print(f"MEME COUNT (app.py): Error writing to count file '{COUNT_FILE}': {e}") # DEBUG
+            print(f"MEME COUNT (app.py): Error writing to count file '{COUNT_FILE}': {e}")
     return count
 # --- End Meme Counter Setup ---
 
 app = Flask(__name__, template_folder='.', static_folder='static')
 
 def query_huggingface_image(payload):
-    if not HF_API_TOKEN: # Check if token is missing before making API call
-        print("Cannot query Hugging Face: HF_API_TOKEN is not set.")
+    if not HF_API_TOKEN or not headers:
+        print("Cannot query Hugging Face: HF_API_TOKEN is not set or headers not prepared.")
         return None
 
-    print(f"Sending payload to Hugging Face: {payload}") # DEBUG
+    # print(f"Sending payload to Hugging Face: {payload}")
     response = requests.post(MODEL_API_URL, headers=headers, json=payload)
 
     if response.status_code == 200:
-        print("Successfully received image from Hugging Face.") # DEBUG
+        # print("Successfully received image from Hugging Face.")
         return response.content
     else:
         error_message = f"Hugging Face API Error: {response.status_code}. "
@@ -80,7 +79,7 @@ def query_huggingface_image(payload):
                 error_message += f" Model is likely loading. Estimated time: {error_details.get('estimated_time', 0)}s."
         except requests.exceptions.JSONDecodeError:
             error_message += response.text
-        print(error_message) # DEBUG
+        print(error_message) # Log Hugging Face errors
         return None
 
 # --- Flask Routes ---
@@ -90,8 +89,9 @@ def index():
 
 @app.route('/generate-meme', methods=['POST'])
 def generate_meme_route():
-    if not HF_API_TOKEN: # Prevent generation if token isn't configured
-        return jsonify({"error": "Server configuration error: API token missing."}), 500
+    if not HF_API_TOKEN:
+        print("Server Misconfiguration: HF_API_TOKEN not available for meme generation.")
+        return jsonify({"error": "Oops! The meme magic is taking a nap. (Admin: Token missing)"}), 503 # User-friendly error
 
     data = request.get_json()
     if not data or 'prompt' not in data:
@@ -106,37 +106,26 @@ def generate_meme_route():
     image_bytes = query_huggingface_image(payload)
 
     if image_bytes:
-        print("MEME COUNT (app.py): Attempting to increment count...") # DEBUG
         increment_meme_count()
         return send_file(
             io.BytesIO(image_bytes),
             mimetype='image/jpeg'
         )
     else:
-        return jsonify({"error": "Failed to generate image. The AI model might be loading or an API error occurred. Please try again in a minute."}), 503
+        return jsonify({"error": "Failed to generate image. The AI model might be busy or having a moment. Please try again soon!"}), 503
 
 @app.route('/get-meme-count', methods=['GET'])
 def get_meme_count_route():
     with count_lock: 
         count = get_meme_count()
-    print(f"MEME COUNT (app.py): Serving count: {count}") # DEBUG
     return jsonify({"count": count})
 
-# --- Run the App ---
+# --- Run the App on Replit ---
 if __name__ == '__main__':
-    if not HF_API_TOKEN:
-        print("*" * 60)
-        print("WARNING: HF_API_TOKEN environment variable is not set.")
-        print("The application will run, but meme generation will FAIL.")
-        print("For local development, set this variable in your shell or using a .env file.")
-        print("For deployment (e.g., on Render), set it in the service's environment variables.")
-        print("*" * 60)
-
+    # Initialize meme_count.txt if it doesn't exist
     initial_count = 0
     try:
         with count_lock:
-            if COUNT_FILE_DIR != ".":
-                os.makedirs(os.path.dirname(COUNT_FILE), exist_ok=True)
             with open(COUNT_FILE, "r") as f:
                 content = f.read().strip()
                 if content: initial_count = int(content)
@@ -146,20 +135,14 @@ if __name__ == '__main__':
         with open(COUNT_FILE, "w") as f: f.write(str(initial_count))
     except IOError as e:
         print(f"MEME COUNT (app.py): Error initializing count file '{COUNT_FILE}': {e}")
-        print(f"MEME COUNT (app.py): Falling back to local directory for count file (will be ephemeral).")
-        COUNT_FILE = "meme_count.txt"
-        with count_lock:
-            try:
-                with open(COUNT_FILE, "r") as f_fallback:
-                    content = f_fallback.read().strip()
-                    if content: initial_count = int(content)
-                    else:
-                        with open(COUNT_FILE, "w") as fw_fallback: fw_fallback.write(str(initial_count))
-            except (FileNotFoundError, ValueError):
-                with open(COUNT_FILE, "w") as f_fallback: f_fallback.write(str(initial_count))
 
-    print(f"MEME COUNT (app.py): Initialized/checked. Current count is {initial_count} from '{COUNT_FILE}'")
+    print(f"MEME COUNT (app.py): Initialized. Current count is {initial_count} from '{COUNT_FILE}'")
 
-    port = int(os.environ.get("PORT", 5000))
-    print(f"Starting Flask app on host 0.0.0.0, port {port}")
-    app.run(host='0.0.0.0', port=port, debug=False)
+    # Replit sets the PORT environment variable.
+    # It's good practice to use '0.0.0.0' to bind to all available interfaces.
+    # Replit will typically map an external port to your app's internal port.
+    # Using debug=True is common on Replit for easier development feedback.
+    # For a more "production-like" Replit, you might set debug=False.
+    port = int(os.environ.get('PORT', 8080)) # Replit usually uses 8080 if PORT not explicitly set for Python web server
+    print(f"Starting Flask server on host 0.0.0.0, port {port}")
+    app.run(host='0.0.0.0', port=port, debug=True)
