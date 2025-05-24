@@ -3,23 +3,30 @@ import requests
 import io
 import os
 import threading # For thread-safe file access
+import sys # For exiting if critical env var is missing
 
 # --- Configuration ---
-# It's better practice to set HF_API_TOKEN as an environment variable.
-# For local testing, you can hardcode it, but be careful with version control.
-HF_API_TOKEN = os.environ.get("HF_API_TOKEN", "YOUR_TOKEN") # Your token
+HF_API_TOKEN = os.environ.get("HF_API_TOKEN") # Get token ONLY from environment variable
+
+if not HF_API_TOKEN:
+    # This will be visible in Render's logs if the env var isn't set
+    print("CRITICAL ERROR: Hugging Face API Token (HF_API_TOKEN) environment variable not found.")
+    # Optionally, you can make the app exit if the token isn't set,
+    # as it's critical for functionality.
+    # sys.exit("Exiting: HF_API_TOKEN is not set. The application cannot run.")
+    # For now, we'll let it proceed, but API calls will fail.
+    # On Render, ensure HF_API_TOKEN is set in the environment variables for the service.
+
 MODEL_API_URL = "https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-xl-base-1.0"
-headers = {"Authorization": f"Bearer {HF_API_TOKEN}"}
+# Ensure headers are only prepared if HF_API_TOKEN is available
+headers = {"Authorization": f"Bearer {HF_API_TOKEN}"} if HF_API_TOKEN else {}
+
 
 # --- Meme Counter Setup ---
 # Check if running on Render and using a persistent disk for the counter
 RENDER_DISK_MOUNT_PATH = "/mnt/data" # Standard Render disk mount path
 if os.path.exists(RENDER_DISK_MOUNT_PATH) and os.access(RENDER_DISK_MOUNT_PATH, os.W_OK):
     COUNT_FILE_DIR = RENDER_DISK_MOUNT_PATH
-    # Optional: Create a subdirectory on the disk if desired
-    # COUNT_FILE_DIR = os.path.join(RENDER_DISK_MOUNT_PATH, "memeking_data")
-    # if not os.path.exists(COUNT_FILE_DIR):
-    #     os.makedirs(COUNT_FILE_DIR, exist_ok=True)
     print(f"MEME COUNT (app.py): Using persistent disk for count file at {COUNT_FILE_DIR}")
 else:
     COUNT_FILE_DIR = "." # Current directory (ephemeral for Render web service)
@@ -27,21 +34,19 @@ else:
 
 COUNT_FILE = os.path.join(COUNT_FILE_DIR, "meme_count.txt")
 
-# Use a lock for thread-safe access to the count file
 count_lock = threading.Lock()
 
 def get_meme_count():
-    # This function is called within a lock, so no need for separate lock here
     try:
         with open(COUNT_FILE, "r") as f:
             count = int(f.read().strip())
     except (FileNotFoundError, ValueError):
-        count = 0 # Default to 0 if file doesn't exist or content is invalid
+        count = 0
     return count
 
 def increment_meme_count():
     with count_lock:
-        current_val = get_meme_count() # Get current count
+        current_val = get_meme_count()
         print(f"MEME COUNT (app.py): Current value before increment: {current_val}") # DEBUG
         count = current_val + 1
         try:
@@ -53,13 +58,13 @@ def increment_meme_count():
     return count
 # --- End Meme Counter Setup ---
 
-# Initialize the Flask app
-# Explicitly defining template_folder and static_folder
 app = Flask(__name__, template_folder='.', static_folder='static')
 
-
 def query_huggingface_image(payload):
-    """Sends a prompt to Hugging Face and gets image bytes back."""
+    if not HF_API_TOKEN: # Check if token is missing before making API call
+        print("Cannot query Hugging Face: HF_API_TOKEN is not set.")
+        return None
+
     print(f"Sending payload to Hugging Face: {payload}") # DEBUG
     response = requests.post(MODEL_API_URL, headers=headers, json=payload)
 
@@ -81,15 +86,13 @@ def query_huggingface_image(payload):
 # --- Flask Routes ---
 @app.route('/')
 def index():
-    """Serves the main HTML page."""
-    # If you were using the environment variable method for PUMP_FUN_LINK:
-    # pump_fun_link = os.environ.get("PUMP_FUN_LINK", "DEFAULT_PUMP_FUN_LINK_IF_NOT_SET")
-    # return render_template('index.html', pump_fun_link=pump_fun_link)
     return render_template('index.html')
 
 @app.route('/generate-meme', methods=['POST'])
 def generate_meme_route():
-    """Handles the meme generation request from the frontend."""
+    if not HF_API_TOKEN: # Prevent generation if token isn't configured
+        return jsonify({"error": "Server configuration error: API token missing."}), 500
+
     data = request.get_json()
     if not data or 'prompt' not in data:
         return jsonify({"error": "Prompt is missing!"}), 400
@@ -104,7 +107,7 @@ def generate_meme_route():
 
     if image_bytes:
         print("MEME COUNT (app.py): Attempting to increment count...") # DEBUG
-        increment_meme_count() # Increment count on successful generation
+        increment_meme_count()
         return send_file(
             io.BytesIO(image_bytes),
             mimetype='image/jpeg'
@@ -112,7 +115,6 @@ def generate_meme_route():
     else:
         return jsonify({"error": "Failed to generate image. The AI model might be loading or an API error occurred. Please try again in a minute."}), 503
 
-# New route to get the meme count
 @app.route('/get-meme-count', methods=['GET'])
 def get_meme_count_route():
     with count_lock: 
@@ -120,33 +122,32 @@ def get_meme_count_route():
     print(f"MEME COUNT (app.py): Serving count: {count}") # DEBUG
     return jsonify({"count": count})
 
-
 # --- Run the App ---
 if __name__ == '__main__':
-    # Ensure the count file is writable by initializing it if it doesn't exist or is empty
+    if not HF_API_TOKEN:
+        print("*" * 60)
+        print("WARNING: HF_API_TOKEN environment variable is not set.")
+        print("The application will run, but meme generation will FAIL.")
+        print("For local development, set this variable in your shell or using a .env file.")
+        print("For deployment (e.g., on Render), set it in the service's environment variables.")
+        print("*" * 60)
+
     initial_count = 0
     try:
         with count_lock:
-            # Try to create the directory for COUNT_FILE if it's on a disk and doesn't exist
-            # This is more relevant if COUNT_FILE_DIR is a subdirectory on the disk
-            if COUNT_FILE_DIR != ".": # i.e., if we are trying to use a specific path like /mnt/data
+            if COUNT_FILE_DIR != ".":
                 os.makedirs(os.path.dirname(COUNT_FILE), exist_ok=True)
-
             with open(COUNT_FILE, "r") as f:
                 content = f.read().strip()
-                if content:
-                    initial_count = int(content)
+                if content: initial_count = int(content)
                 else:
-                    with open(COUNT_FILE, "w") as fw:
-                        fw.write(str(initial_count))
+                    with open(COUNT_FILE, "w") as fw: fw.write(str(initial_count))
     except (FileNotFoundError, ValueError):
-        with open(COUNT_FILE, "w") as f:
-            f.write(str(initial_count))
-    except IOError as e: # Catch potential errors creating directory or file on disk
+        with open(COUNT_FILE, "w") as f: f.write(str(initial_count))
+    except IOError as e:
         print(f"MEME COUNT (app.py): Error initializing count file '{COUNT_FILE}': {e}")
         print(f"MEME COUNT (app.py): Falling back to local directory for count file (will be ephemeral).")
-        COUNT_FILE = "meme_count.txt" # Fallback to local if disk path fails
-        # Retry initialization with local fallback
+        COUNT_FILE = "meme_count.txt"
         with count_lock:
             try:
                 with open(COUNT_FILE, "r") as f_fallback:
@@ -157,15 +158,8 @@ if __name__ == '__main__':
             except (FileNotFoundError, ValueError):
                 with open(COUNT_FILE, "w") as f_fallback: f_fallback.write(str(initial_count))
 
-
     print(f"MEME COUNT (app.py): Initialized/checked. Current count is {initial_count} from '{COUNT_FILE}'")
 
-    # Get port from environment variable (for Render, Heroku, etc.) or default to 5000 for local dev
     port = int(os.environ.get("PORT", 5000))
-    # For production, Gunicorn (or another WSGI server) will run the app.
-    # app.run() is mainly for local development.
-    # When deploying, the `startCommand` in render.yaml (e.g., "gunicorn app:app") takes precedence.
-    # Setting debug=False is crucial for any production-like environment.
-    # host='0.0.0.0' makes the server accessible externally (required by most hosting platforms).
     print(f"Starting Flask app on host 0.0.0.0, port {port}")
-    app.run(host='0.0.0.0', port=port, debug=False) # Set debug=False for production readiness
+    app.run(host='0.0.0.0', port=port, debug=False)
