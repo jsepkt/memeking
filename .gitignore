@@ -1,0 +1,30 @@
+# Python virtual environment
+venv/
+env/
+ENV/
+*/ENV/
+*/env/
+*/venv/
+
+# Python cache files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Runtime files (like your meme counter, if ephemeral is okay)
+meme_count.txt
+
+# OS-generated files
+.DS_Store
+Thumbs.db
+
+# IDE / Editor specific files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Secrets - If you ever accidentally hardcode them (don't do this!)
+# .env # Usually for environment variables, but you're setting HF_API_TOKEN on Render
+# secrets.json
+# config.py # If it contains sensitive data

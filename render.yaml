@@ -1,0 +1,14 @@
+services:
+  - type: web # This is a web service
+    name: memeking-app
+    env: python # Environment (can also be docker, node, etc.)
+    region: oregon # Or your preferred region: frankfurt, ohio, singapore
+    plan: free # Use the free instance type
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "gunicorn app:app"
+    envVars:
+      - key: PYTHON_VERSION # Specify Python version
+        value: 3.10.4 # Choose a version Render supports, check their docs
+      - key: HF_API_TOKEN
+        sync: false # This means you'll set it in the Render dashboard (more secure)
+      # If you have other environment variables, add them here
