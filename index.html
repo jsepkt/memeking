@@ -5,39 +5,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- SEO: Title Tag - CRUCIAL -->
-    <title>MEMEKING: AI Meme Generator for Crypto & Meme Coins | Create Funny Memes</title>
+    <title>MEMEKING: AI Meme & GIF Generator for Crypto & Meme Coins | Create Funny Memes</title>
 
     <!-- SEO: Meta Description - CRUCIAL -->
-    <meta name="description" content="Unleash your creativity with MEMEKING, the ultimate AI meme generator for meme coin creators and crypto enthusiasts! Instantly generate hilarious, unique memes for your project, community, or just for fun. Get your $MKKG coin on Pump.fun!">
+    <meta name="description" content="Unleash your creativity with MEMEKING, the ultimate AI meme and GIF generator for meme coin creators and crypto enthusiasts! Instantly generate hilarious, unique memes and short animated GIFs for your project, community, or just for fun. Get your $MKKG coin on Pump.fun!">
 
     <!-- SEO: Keywords (Less impact now, but doesn't hurt in moderation) -->
-    <meta name="keywords" content="ai meme generator, meme coin, crypto memes, create memes, funny memes, MEMEKING, $MKKG, pump.fun, crypto community, meme token, AI image generator, Solana memes">
+    <meta name="keywords" content="ai meme generator, ai gif generator, animated memes, meme coin, crypto memes, create memes, funny memes, MEMEKING, $MKKG, pump.fun, crypto community, meme token, AI image generator, AI animation, Solana memes">
 
     <!-- SEO: Canonical URL (If you have multiple URLs pointing to the same content, e.g. with/without www) -->
     <!-- <link rel="canonical" href="https://your-memeking-app-name.onrender.com/" /> --> <!-- ACTION: Uncomment and set if deployed -->
 
     <!-- SEO: Open Graph Tags (for social media sharing) -->
-    <meta property="og:title" content="MEMEKING: AI Meme Generator for Crypto & Meme Coins">
-    <meta property="og:description" content="Instantly generate hilarious, unique memes for your meme coin or crypto project with MEMEKING's AI power!">
+    <meta property="og:title" content="MEMEKING: AI Meme & GIF Generator for Crypto & Meme Coins">
+    <meta property="og:description" content="Instantly generate hilarious memes & short animated GIFs for your meme coin or crypto project with MEMEKING's AI power!">
     <meta property="og:image" content="{{ url_for('static', filename='memeking_og_image.jpg') }}"> <!-- ACTION: Create a compelling OG image (e.g., 1200x630px) and name it memeking_og_image.jpg in your static folder -->
-    <meta property="og:url" content="https://memeking.onrender.com/"> <!-- ACTION: Replace with your live URL -->
+    <meta property="og:url" content="https://memeking-app-v1.onrender.com/"> <!-- ACTION: Replace with your live URL -->
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="MEMEKING">
 
     <!-- SEO: Twitter Card Tags (for Twitter sharing) -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="MEMEKING: AI Meme Generator for Crypto & Meme Coins">
-    <meta name="twitter:description" content="Create viral crypto memes in seconds with MEMEKING's AI! Perfect for meme coin creators and communities.">
+    <meta name="twitter:title" content="MEMEKING: AI Meme & GIF Generator">
+    <meta name="twitter:description" content="Create viral crypto memes and animated GIFs in seconds with MEMEKING's AI! Perfect for meme coin creators and communities.">
     <meta name="twitter:image" content="{{ url_for('static', filename='memeking_twitter_card.jpg') }}"> <!-- ACTION: Create a Twitter card image (e.g., 800x418px or similar ratio) and name it memeking_twitter_card.jpg in your static folder -->
-    <!-- <meta name="twitter:site" content="@YourTwitterHandle"> --> <!-- ACTION: Uncomment and add your X/Twitter handle -->
-    <!-- <meta name="twitter:creator" content="@YourTwitterHandle"> --> <!-- ACTION: Uncomment and add your X/Twitter handle -->
+    <meta name="twitter:site" content="@pillowgoldSOL"> <!-- ACTION: Updated with your X/Twitter handle -->
+    <meta name="twitter:creator" content="@pillowgoldSOL"> <!-- ACTION: Updated with your X/Twitter handle -->
 
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&family=Gaegu:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        /* ... (Your existing CSS styles remain the same) ... */
         :root {
             --crayon-red: #EE204D;
             --crayon-blue: #1F75FE;
@@ -122,22 +121,24 @@
         textarea#promptInput:focus { outline: none; border-color: var(--crayon-orange); }
         .generator-card textarea#promptInput:focus { border-color: var(--crayon-yellow); }
 
-        button.crayon-button, button#generateBtn, button#downloadBtn, button#clearBtn, button#copyWalletBtn {
-            font-family: 'Gaegu', cursive; font-size: 1.2em; font-weight: 700;
-            color: var(--crayon-black); padding: 8px 18px;
+        button.crayon-button, button#generateBtn, button#generateGifBtn, button#downloadBtn, button#clearBtn, button#copyWalletBtn { /* Added #generateGifBtn */
+            font-family: 'Gaegu', cursive; font-size: 1.1em; font-weight: 700; /* Slightly smaller to fit more buttons */
+            color: var(--crayon-black); padding: 8px 15px; /* Slightly smaller padding */
             border: 3px solid var(--crayon-black); border-radius: 10px; cursor: pointer;
             text-transform: uppercase; transition: all 0.2s ease;
             box-shadow: 3px 3px 0px 0px var(--crayon-black);
             display: inline-flex; align-items: center; gap: 8px; margin: 5px;
         }
-        button.crayon-button:hover, button#generateBtn:hover, button#downloadBtn:hover, button#clearBtn:hover, button#copyWalletBtn:hover {
+        button.crayon-button:hover, button#generateBtn:hover, button#generateGifBtn:hover, button#downloadBtn:hover, button#clearBtn:hover, button#copyWalletBtn:hover {
             transform: translate(2px, 2px); box-shadow: 1px 1px 0px 0px var(--crayon-black);
         }
-        button.crayon-button:active, button#generateBtn:active, button#downloadBtn:active, button#clearBtn:active, button#copyWalletBtn:active {
+        button.crayon-button:active, button#generateBtn:active, button#generateGifBtn:active, button#downloadBtn:active, button#clearBtn:active, button#copyWalletBtn:active {
             transform: translate(3px, 3px); box-shadow: 0px 0px 0px 0px var(--crayon-black);
         }
 
+        /* Specific button colors */
         button#generateBtn { background-color: var(--crayon-yellow); border-color: var(--crayon-red); box-shadow: 3px 3px 0px 0px var(--crayon-red); }
+        button#generateGifBtn { background-color: var(--crayon-purple); color: white; border-color: var(--crayon-yellow); box-shadow: 3px 3px 0px 0px var(--crayon-yellow); } /* Style for GIF button */
         button#buyCoinBtn { background-color: var(--crayon-green); border-color: var(--crayon-blue); box-shadow: 3px 3px 0px 0px var(--crayon-blue); }
         .social-button.x-btn { background-color: var(--crayon-blue); border-color: var(--crayon-orange); box-shadow: 3px 3px 0px 0px var(--crayon-orange); color: white; }
         .social-button.tg-btn { background-color: var(--crayon-orange); border-color: var(--crayon-purple); box-shadow: 3px 3px 0px 0px var(--crayon-purple); color: white; }
@@ -213,25 +214,35 @@
         .icon-x:before { content: "X"; }
         .icon-telegram:before { content: "✈️"; }
         .icon-wand:before { content: "✨"; }
+        .icon-gif:before { content: "🎬"; } /* New icon for GIF */
         .icon-download:before { content: "💾"; }
         .icon-clear:before { content: "🗑️"; }
-        .icon-gift:before { content: "🎁"; }
         .icon-copy:before { content: "📋"; }
 
         footer {
             width: 100%; background-color: var(--crayon-black); color: var(--paper-bg);
             text-align: center; padding: 15px 0; font-family: 'Comic Neue', cursive;
-            font-size: 0.9em; bottom: 0; left: 0;
+            font-size: 0.9em; position: fixed; bottom: 0; left: 0; /* Fixed footer */
             z-index: 10; border-top: 3px solid var(--crayon-yellow);
+        }
+
+        @media (max-width: 768px) { /* Added a breakpoint for more buttons */
+             button.crayon-button, button#generateBtn, button#generateGifBtn, button#downloadBtn, button#clearBtn, button#copyWalletBtn {
+                 font-size: 1em; /* Slightly smaller for medium screens if many buttons */
+                 padding: 8px 12px;
+             }
         }
 
         @media (max-width: 600px) {
             h1.main-title { font-size: 3em; }
             h2.section-title { font-size: 2em; }
             .section-card { padding: 20px; }
-            button.crayon-button, button#generateBtn, button#downloadBtn, button#clearBtn, button#copyWalletBtn { font-size: 1em; padding: 8px 12px;}
+            button.crayon-button, button#generateBtn, button#generateGifBtn, button#downloadBtn, button#clearBtn, button#copyWalletBtn {
+                font-size: 0.9em; /* Even smaller for small screens */
+                padding: 8px 10px;
+            }
             .wallet-address-container input[type="text"] { font-size: 0.8em; max-width: 250px;}
-            .page-wrapper { padding-bottom: 100px; }
+            .page-wrapper { padding-bottom: 120px; } /* More space if footer text wraps */
             .coin-logo { max-width: 80px; max-height: 80px;}
         }
     </style>
@@ -239,38 +250,41 @@
 <body>
     <div class="page-wrapper">
         <!-- Hero Section -->
-        <section class="section-card hero-card" aria-labelledby="hero-title"> <!-- SEO: aria-labelledby for section landmark -->
-            <!-- SEO: Alt text for logo -->
+        <section class="section-card hero-card" aria-labelledby="hero-title">
             <img src="{{ url_for('static', filename='memeking.jpg') }}" alt="MEMEKING Coin Crayon Style Logo" class="coin-logo">
-            <!-- SEO: h1 is the primary heading -->
-            <h1 id="hero-title" class="main-title">MEMEKING! AI Meme Generator</h1>
-            <!-- SEO: More descriptive h2 -->
+            <h1 id="hero-title" class="main-title">MEMEKING! AI Meme & GIF Generator</h1>
             <h2 class="section-title">Unleash Your Crypto Meme Creativity!</h2>
-            <p>This is <strong>MEMEKING ($MKKG - *example*)</strong>, the ultimate AI-powered meme generator for meme coin creators and the crypto community! <br>No boring charts, just pure, instant meme magic for your project or for fun!</p>
+            <p>This is <strong>MEMEKING ($MKKG - *example*)</strong>, the ultimate AI-powered meme and GIF generator for meme coin creators and the crypto community! <br>No boring charts, just pure, instant meme magic for your project or for fun!</p>
             <button id="buyCoinBtn" class="crayon-button" onclick="window.open('https://pump.fun/GT3CrepnC7YSB6quSBDYH9gMr7GYcKgUc4HzEoBxpump', '_blank')">
                 <span class="icon icon-rocket"></span> Get $MKKG on Pump.fun!
             </button>
-            <p style="font-size: 0.9em; margin-top:10px;"><em>(V1.0 - Create freely, but play nice! Use our AI to make funny memes.)</em></p>
+            <p style="font-size: 0.9em; margin-top:10px;"><em>(V1.1 - Now with Animated GIF Memes! Create freely, but play nice.)</em></p>
         </section>
 
         <!-- Meme Generator Section -->
         <section class="section-card generator-card" aria-labelledby="generator-title">
-            <h2 id="generator-title" class="section-title">Make a Meme with AI!</h2>
-            <p>Scribble your meme idea below & our AI will bring your funny crypto meme to life in seconds!</p>
-            <!-- SEO: Label for textarea for accessibility -->
-            <label for="promptInput" style="display:none;">Meme Prompt</label> <!-- Visually hidden label -->
-            <textarea id="promptInput" placeholder="e.g., 'Solana coin character surfing on a rocket to the moon'" aria-label="Enter your meme prompt here"></textarea>
+            <h2 id="generator-title" class="section-title">Make a Meme or GIF!</h2>
+            <p>Scribble your idea below & our AI will bring your funny crypto creation to life!</p>
+            <label for="promptInput" style="display:none;">Meme/GIF Prompt</label>
+            <textarea id="promptInput" placeholder="e.g., 'Solana coin character surfing on a rocket to the moon'" aria-label="Enter your meme or GIF prompt here"></textarea>
+
             <div class="action-buttons-container">
-                <button id="generateBtn" aria-label="Generate Meme"><span class="icon icon-wand"></span> Create!</button>
-                <button id="downloadBtn" aria-label="Download Meme"><span class="icon icon-download"></span> Download</button>
+                <button id="generateBtn" aria-label="Generate Static Meme Image">
+                    <span class="icon icon-wand"></span> Image Meme!
+                </button>
+                <button id="generateGifBtn" class="crayon-button" aria-label="Generate Animated GIF Meme">
+                    <span class="icon icon-gif"></span> Animated GIF!
+                </button>
+                <button id="downloadBtn" aria-label="Download Creation"><span class="icon icon-download"></span> Download</button>
                 <button id="clearBtn" aria-label="Clear Prompt and Image"><span class="icon icon-clear"></span> Clear</button>
             </div>
-            <div id="memeResultContainer" role="img" aria-live="polite" aria-label="Generated meme image will appear here"> <!-- SEO: aria-live for dynamic content -->
-                <div class="loader" id="loader" role="status" aria-label="Loading meme"></div>
-                <img id="memeImage" src="#" alt="Your AI Generated Meme" style="display:none;"/> <!-- SEO: Alt text for generated image -->
-                <div id="errorMessage" class="message-display error-message" role="alert"></div> <!-- SEO: role="alert" for errors -->
+
+            <div id="memeResultContainer" role="img" aria-live="polite" aria-label="Generated meme or GIF will appear here">
+                <div class="loader" id="loader" role="status" aria-label="Loading creation"></div>
+                <img id="memeImage" src="#" alt="Your AI Generated Creation" style="display:none;"/>
+                <div id="errorMessage" class="message-display error-message" role="alert"></div>
             </div>
-            <div class="meme-counter-display">AI Memes Created: <span id="memeCounter">Loading...</span></div>
+            <div class="meme-counter-display">Creations Made: <span id="memeCounter">Loading...</span></div>
         </section>
 
         <!-- Donation Section -->
@@ -302,7 +316,7 @@
     </div> <!-- End of page-wrapper -->
 
     <footer>
-        © 2025 All rights reserved. <br>
+        © <span id="currentYear">2024</span> Pillow Gold Developers LLC. All rights reserved. <br> <!-- Dynamic Year -->
         <a href="{{ url_for('terms_page') }}" style="color: var(--crayon-yellow); text-decoration:none;" rel="noopener">Terms & Conditions</a> |
         <a href="{{ url_for('privacy_page') }}" style="color: var(--crayon-yellow); text-decoration:none;" rel="noopener">Privacy Policy</a>
     </footer>
@@ -310,8 +324,8 @@
     <script>
         // --- DOM Elements ---
         const promptInput = document.getElementById('promptInput');
-        // ... (rest of your JavaScript remains the same) ...
         const generateBtn = document.getElementById('generateBtn');
+        const generateGifBtn = document.getElementById('generateGifBtn'); // New button
         const downloadBtn = document.getElementById('downloadBtn');
         const clearBtn = document.getElementById('clearBtn');
         const memeImage = document.getElementById('memeImage');
@@ -320,64 +334,88 @@
         const memeCounterSpan = document.getElementById('memeCounter');
         const copyWalletBtn = document.getElementById('copyWalletBtn');
         const donationWalletInput = document.getElementById('donationWallet');
+        const currentYearSpan = document.getElementById('currentYear');
+
 
         const FORBIDDEN_KEYWORDS_FRONTEND = [ 
             "kill", "murder", "rape", "torture", "gore", "blood", "explicit", "nude", "naked",
             "sex", "porn", "xxx", "nazi", "racist", "hate" 
         ];
 
-        generateBtn.addEventListener('click', handleGenerateMeme);
-        downloadBtn.addEventListener('click', handleDownloadMeme);
-        clearBtn.addEventListener('click', handleClearCreation);
-        if (copyWalletBtn) {
-             copyWalletBtn.addEventListener('click', handleCopyWalletAddress);
-        }
+        // --- Event Listeners ---
+        if (generateBtn) generateBtn.addEventListener('click', () => handleGenerateCreation('/generate-meme', 'Image Meme'));
+        if (generateGifBtn) generateGifBtn.addEventListener('click', () => handleGenerateCreation('/generate-animated-meme', 'Animated GIF'));
+        
+        if (downloadBtn) downloadBtn.addEventListener('click', handleDownloadMeme); // Will be updated by handleGenerateCreation
+        if (clearBtn) clearBtn.addEventListener('click', handleClearCreation);
+        if (copyWalletBtn) copyWalletBtn.addEventListener('click', handleCopyWalletAddress);
 
-        async function handleGenerateMeme() {
+        // --- Generic Handler for Creation ---
+        async function handleGenerateCreation(endpointUrl, creationType) {
+            // Null checks for critical elements used within this function
+            if (!promptInput || !loader || !errorMessageDiv || !memeImage || !downloadBtn || !clearBtn || (!generateBtn && !generateGifBtn)) {
+                console.error("One or more essential UI elements are missing for generation.");
+                displayMessage("Oops! Something's not right with the page setup. Please refresh.", "error");
+                return;
+            }
+
             const promptText = promptInput.value.trim();
             const promptLower = promptText.toLowerCase();
 
             for (const keyword of FORBIDDEN_KEYWORDS_FRONTEND) {
                 if (promptLower.includes(keyword)) {
-                    displayMessage("Your prompt might contain sensitive words. We aim for fun, safe content. Please adjust your prompt.", 'error');
-                    generateBtn.disabled = false;
-                    clearBtn.disabled = false;
-                    loader.style.display = 'none';
-                    generateBtn.innerHTML = '<span class="icon icon-wand"></span> Create!';
+                    displayMessage(`Your prompt for the ${creationType} might contain sensitive words. Please adjust your prompt.`, 'error');
+                    if (generateBtn) generateBtn.disabled = false;
+                    if (generateGifBtn) generateGifBtn.disabled = false;
+                    if (clearBtn) clearBtn.disabled = false;
+                    if (loader) loader.style.display = 'none';
+                    if (generateBtn) generateBtn.innerHTML = '<span class="icon icon-wand"></span> Image Meme!';
+                    if (generateGifBtn) generateGifBtn.innerHTML = '<span class="icon icon-gif"></span> Animated GIF!';
                     return;
                 }
             }
 
             if (!promptText) {
-                displayMessage("Hey! You need to write an idea for your meme drawing!", 'error');
+                displayMessage(`Hey! You need to write an idea for your ${creationType} drawing!`, 'error');
                 return;
             }
 
-            memeImage.style.display = 'none';
-            memeImage.src = '#';
+            memeImage.style.display = 'none'; memeImage.src = '#';
             downloadBtn.style.display = 'none';
             errorMessageDiv.style.display = 'none';
             loader.style.display = 'block';
-            generateBtn.disabled = true;
+            
+            if (generateBtn) generateBtn.disabled = true;
+            if (generateGifBtn) generateGifBtn.disabled = true;
             clearBtn.disabled = true;
-            generateBtn.innerHTML = '<span class="icon icon-wand"></span> Drawing...';
+
+            let clickedButton = (endpointUrl === '/generate-meme') ? generateBtn : generateGifBtn;
+            let originalButtonText = clickedButton ? clickedButton.innerHTML : "";
+            if (clickedButton) clickedButton.innerHTML = `<span class="icon icon-wand"></span> Conjuring ${creationType}...`;
 
             try {
-                const response = await fetch('/generate-meme', {
+                const response = await fetch(endpointUrl, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ prompt: promptText })
                 });
 
                 if (response.ok) {
-                    const imageBlob = await response.blob();
-                    const imageUrl = URL.createObjectURL(imageBlob);
-                    memeImage.src = imageUrl;
+                    const creationBlob = await response.blob();
+                    const creationUrl = URL.createObjectURL(creationBlob);
+                    memeImage.src = creationUrl;
                     memeImage.style.display = 'block';
+                    memeImage.alt = `Your AI Generated ${creationType}`;
+                    
                     downloadBtn.style.display = 'inline-flex';
+                    const extension = (creationType === 'Animated GIF') ? 'gif' : 'png'; // Default to png for static
+                    const downloadFilename = `memeking_${creationType.toLowerCase().replace(/\s+/g, '_')}_${Date.now()}.${extension}`;
+                    // Update the download button's click handler directly with new URL and filename
+                    downloadBtn.onclick = () => handleDownloadMeme(creationUrl, downloadFilename);
+
                     fetchMemeCount();
                 } else {
-                    let errorMsg = "Uh oh! The AI crayons are stuck.";
+                    let errorMsg = `Uh oh! The AI crayons are stuck for your ${creationType}.`;
                     try {
                         const errorData = await response.json();
                         errorMsg = errorData.error || `Error ${response.status}: ${response.statusText}`;
@@ -387,65 +425,80 @@
                     displayMessage(errorMsg, 'error');
                 }
             } catch (error) {
-                displayMessage("Oops! Network scribbles. Check connection.", 'error');
+                displayMessage(`Oops! Network scribbles for your ${creationType}. Check connection.`, 'error');
             } finally {
-                loader.style.display = 'none';
-                generateBtn.disabled = false;
-                clearBtn.disabled = false;
-                generateBtn.innerHTML = '<span class="icon icon-wand"></span> Create!';
+                if(loader) loader.style.display = 'none';
+                if (generateBtn) { generateBtn.disabled = false; generateBtn.innerHTML = '<span class="icon icon-wand"></span> Image Meme!';}
+                if (generateGifBtn) { generateGifBtn.disabled = false; generateGifBtn.innerHTML = '<span class="icon icon-gif"></span> Animated GIF!';}
+                if (clearBtn) clearBtn.disabled = false;
             }
         }
 
-        function handleDownloadMeme() {
-            if (memeImage.src && memeImage.src !== '#' && memeImage.style.display !== 'none') {
+        function handleDownloadMeme(urlToDownload, desiredFilename) {
+            // This function is now primarily called with specific args from handleGenerateCreation's downloadBtn.onclick
+            if (urlToDownload && desiredFilename) {
                 const link = document.createElement('a');
-                link.href = memeImage.src;
-                link.download = `memeking_creation_${Date.now()}.png`;
+                link.href = urlToDownload;
+                link.download = desiredFilename;
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
             } else {
-                displayMessage("No meme to download yet!", "error");
+                // Fallback or error if called unexpectedly without args
+                console.warn("handleDownloadMeme called without proper arguments. Attempting to use current memeImage if available.");
+                if (memeImage && memeImage.src && memeImage.src !== '#' && memeImage.style.display !== 'none') {
+                     const link = document.createElement('a');
+                     link.href = memeImage.src;
+                     // Guess extension - less reliable
+                     const isGif = memeImage.src.includes("blob:") ? (memeImage.alt.includes("GIF") ? true : false) : memeImage.src.endsWith('.gif');
+                     link.download = `memeking_creation_${Date.now()}.${isGif ? 'gif' : 'png'}`;
+                     document.body.appendChild(link);
+                     link.click();
+                     document.body.removeChild(link);
+                } else {
+                    displayMessage("No creation to download yet!", "error");
+                }
             }
         }
 
         function handleClearCreation() {
-            promptInput.value = '';
-            memeImage.style.display = 'none';
-            memeImage.src = '#';
-            downloadBtn.style.display = 'none';
-            errorMessageDiv.style.display = 'none';
-            loader.style.display = 'none';
-            generateBtn.disabled = false;
-            generateBtn.innerHTML = '<span class="icon icon-wand"></span> Create!';
+            if(promptInput) promptInput.value = '';
+            if(memeImage) { memeImage.style.display = 'none'; memeImage.src = '#'; }
+            if(downloadBtn) downloadBtn.style.display = 'none';
+            if(errorMessageDiv) errorMessageDiv.style.display = 'none';
+            if(loader) loader.style.display = 'none';
+            if(generateBtn) {generateBtn.disabled = false; generateBtn.innerHTML = '<span class="icon icon-wand"></span> Image Meme!';}
+            if(generateGifBtn) {generateGifBtn.disabled = false; generateGifBtn.innerHTML = '<span class="icon icon-gif"></span> Animated GIF!';}
         }
 
         function displayMessage(message, type = 'error') {
+            if (!errorMessageDiv) return;
             errorMessageDiv.textContent = message;
             errorMessageDiv.style.display = 'block';
             if (type === 'error') {
-                memeImage.style.display = 'none';
-                downloadBtn.style.display = 'none';
+                if (memeImage) memeImage.style.display = 'none';
+                if (downloadBtn) downloadBtn.style.display = 'none';
             }
         }
 
         async function fetchMemeCount() {
+            if (!memeCounterSpan) return;
             try {
                 const response = await fetch('/get-meme-count');
                 if (response.ok) {
                     const data = await response.json();
-                    if (memeCounterSpan) memeCounterSpan.textContent = data.count;
+                    memeCounterSpan.textContent = data.count;
                 } else {
-                    if (memeCounterSpan) memeCounterSpan.textContent = 'N/A';
+                    memeCounterSpan.textContent = 'N/A';
                 }
             } catch (error) {
                 console.error("Failed to fetch meme count:", error);
-                if (memeCounterSpan) memeCounterSpan.textContent = 'Error';
+                memeCounterSpan.textContent = 'Error';
             }
         }
 
         function handleCopyWalletAddress() {
-            if (!donationWalletInput) return;
+            if (!donationWalletInput || !copyWalletBtn) return;
             donationWalletInput.select();
             donationWalletInput.setSelectionRange(0, 99999);
             try {
@@ -479,6 +532,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             if(downloadBtn) downloadBtn.style.display = 'none';
             fetchMemeCount();
+            if(currentYearSpan) currentYearSpan.textContent = new Date().getFullYear(); // Update copyright year
         });
     </script>
 </body>
