@@ -4,7 +4,7 @@ import io
 import os
 import threading
 import sys # Kept for potential future use
-from PIL import Image, ImageDraw, ImageEnhance, ImageFilter, ImageOps # Added ImageOps for more effects
+from PIL import Image, ImageDraw, ImageEnhance, ImageFilter, ImageOps # For programmatic animation
 import imageio # For GIF creation
 import math # For animation effects like sine waves
 import random # For choosing random animation type
@@ -38,7 +38,7 @@ count_lock = threading.Lock()
 def get_meme_count():
     try:
         with open(COUNT_FILE, "r") as f: count = int(f.read().strip())
-    except (FileNotFoundError, ValueError, IOError): # More specific exceptions
+    except (FileNotFoundError, ValueError, IOError):
         count = 0
     return count
 
@@ -52,7 +52,7 @@ def increment_meme_count():
 
 # --- Initialize Flask App ---
 app = Flask(__name__, template_folder='.', static_folder='static')
-app.secret_key = os.environ.get("FLASK_SECRET_KEY", "a-very-strong-dev-secret-key-please-change-for-production") # Emphasize changing
+app.secret_key = os.environ.get("FLASK_SECRET_KEY", "a-dev-secret-key-change-for-prod-and-set-env-var")
 
 
 # --- Helper Function for Hugging Face Static Images ---
@@ -72,35 +72,48 @@ def query_hf_static_image(payload):
 def create_simple_animation_frames(image_bytes, animation_type="wiggle", num_frames=12):
     """
     Creates a list of PIL Image frames for a simple ~1-second animation.
-    `num_frames` should be around 10-15 for a 1-second GIF if duration per frame is ~80-100ms.
+    animation_type: "wiggle", "pulse_scale", "pulse_brightness", "center_jump", 
+                    "center_glow", "color_cycle_center", "rotate"
     """
     try:
         base_img_rgba = Image.open(io.BytesIO(image_bytes)).convert("RGBA")
     except Exception as e:
         print(f"Error opening base image for animation: {e}")
+        traceback.print_exc()
         return []
 
     frames = []
     width, height = base_img_rgba.size
-
-    # Define a central region (e.g., middle 50% of the image)
     center_x, center_y = width // 2, height // 2
+
+    # Central region (used by some effects)
     region_width, region_height = width // 2, height // 2
     region_bbox = (
-        max(0, center_x - region_width // 2),
-        max(0, center_y - region_height // 2),
-        min(width, center_x + region_width // 2),
-        min(height, center_y + region_height // 2)
+        max(0, center_x - region_width // 2), max(0, center_y - region_height // 2),
+        min(width, center_x + region_width // 2), min(height, center_y + region_height // 2)
     )
 
     for i in range(num_frames):
-        current_frame_canvas_rgba = base_img_rgba.copy() # Start with a fresh RGBA copy
+        current_frame_canvas_rgba = base_img_rgba.copy() # Start fresh for each frame
 
         if animation_type == "wiggle":
-            offset = int(width * 0.015 * math.sin(4 * math.pi * i / num_frames)) # Wiggles twice
-            # Using AFFINE transform for smoother wiggle and to avoid manual canvas size issues
-            # (1, 0, x_offset, 0, 1, y_offset)
-            current_frame_canvas_rgba = base_img_rgba.transform(base_img_rgba.size, Image.AFFINE, (1, 0, offset, 0, 1, 0), resample=Image.BICUBIC)
+            max_wiggle_px = int(width * 0.02) 
+            offset = int(max_wiggle_px * math.sin(4 * math.pi * i / num_frames))
+            current_frame_canvas_rgba = base_img_rgba.transform(
+                base_img_rgba.size, Image.AFFINE, (1, 0, offset, 0, 1, 0), resample=Image.BICUBIC
+            )
+
+        elif animation_type == "rotate":
+            max_angle = 5 
+            angle = max_angle * math.sin(2 * math.pi * i / num_frames)
+            # Rotate around the center, keeping original size (might crop corners)
+            # To avoid cropping, you'd rotate with expand=True then crop/paste onto a new canvas.
+            # For this simple version, expand=False is used.
+            current_frame_canvas_rgba = base_img_rgba.rotate(angle, resample=Image.BICUBIC, expand=False, center=(center_x, center_y))
+            # Ensure the rotated image still has an alpha channel if it's RGBA
+            if current_frame_canvas_rgba.mode != 'RGBA' and base_img_rgba.mode == 'RGBA':
+                current_frame_canvas_rgba = current_frame_canvas_rgba.convert('RGBA')
+
 
         elif animation_type == "pulse_scale":
             scale_factor = 1.0 + 0.05 * math.sin(2 * math.pi * i / num_frames)
@@ -108,12 +121,18 @@ def create_simple_animation_frames(image_bytes, animation_type="wiggle", num_fra
             new_h = int(height * scale_factor)
             if new_w <=0 or new_h <=0: new_w, new_h = width, height
             
-            scaled_region = base_img_rgba.resize((new_w, new_h), Image.Resampling.LANCZOS)
+            scaled_img = base_img_rgba.resize((new_w, new_h), Image.Resampling.LANCZOS)
             
             temp_canvas = Image.new("RGBA", base_img_rgba.size, (0,0,0,0)) # Transparent
             paste_x = (width - new_w) // 2
             paste_y = (height - new_h) // 2
-            temp_canvas.paste(scaled_region, (paste_x, paste_y), scaled_region if scaled_region.mode == 'RGBA' else None)
+            # Ensure scaled_img has alpha if base had it, for proper pasting
+            if scaled_img.mode != 'RGBA' and base_img_rgba.mode == 'RGBA':
+                 alpha = base_img_rgba.resize((new_w,new_h), Image.Resampling.LANCZOS).split()[-1]
+                 scaled_img = scaled_img.convert("RGB") # Ensure it's RGB before putting alpha
+                 scaled_img.putalpha(alpha)
+
+            temp_canvas.paste(scaled_img, (paste_x, paste_y), scaled_img if scaled_img.mode == 'RGBA' else None)
             current_frame_canvas_rgba = temp_canvas
 
         elif animation_type == "pulse_brightness":
@@ -128,57 +147,21 @@ def create_simple_animation_frames(image_bytes, animation_type="wiggle", num_fra
             
             subject_region = base_img_rgba.crop(region_bbox)
             background_for_jump = base_img_rgba.copy()
-            # "Erase" subject from original position on background by pasting transparent pixels
             eraser = Image.new('RGBA', (region_bbox[2]-region_bbox[0], region_bbox[3]-region_bbox[1]), (0,0,0,0))
-            background_for_jump.paste(eraser, region_bbox, eraser)
+            background_for_jump.paste(eraser, region_bbox, eraser) # Paste transparent region
             
             jumped_pos_y = region_bbox[1] - y_offset
-            background_for_jump.paste(subject_region, (region_bbox[0], jumped_pos_y), subject_region)
+            # Ensure subject_region has alpha for proper pasting if base was RGBA
+            if subject_region.mode != 'RGBA' and base_img_rgba.mode == 'RGBA':
+                subject_region = subject_region.convert('RGBA') # Should ideally already be if cropped from RGBA
+
+            background_for_jump.paste(subject_region, (region_bbox[0], jumped_pos_y), subject_region if subject_region.mode == 'RGBA' else None)
             current_frame_canvas_rgba = background_for_jump
+        
+        else: 
+            pass 
 
-        elif animation_type == "center_glow":
-            if i % 4 < 2 : # Glow for half the frames
-                temp_img_for_glow = base_img_rgba.copy()
-                # Create a blurred, slightly larger, brightened version of the central region for the glow
-                subject_region = temp_img_for_glow.crop(region_bbox)
-                glow_radius = 3 + (i%2)*2
-                
-                # Brighten and slightly blur the subject for the glow base
-                bright_enhancer = ImageEnhance.Brightness(subject_region)
-                brightened_subject = bright_enhancer.enhance(1.5)
-                blurred_subject_for_glow = brightened_subject.filter(ImageFilter.GaussianBlur(radius=glow_radius))
-
-                # Create a glow layer, paste blurred subject, then original subject on top
-                glow_layer = Image.new("RGBA", base_img_rgba.size, (0,0,0,0))
-                glow_layer.paste(blurred_subject_for_glow, region_bbox, blurred_subject_for_glow)
-                
-                current_frame_canvas_rgba = Image.alpha_composite(glow_layer, base_img_rgba) # Alpha composite glow under original
-            else:
-                pass # current_frame_canvas_rgba is already a copy of base_img_rgba
-
-        elif animation_type == "color_cycle_center":
-            if i % 2 == 0: 
-                subject_region_original = base_img_rgba.crop(region_bbox)
-                tint_colors = [(255,100,100,200), (100,255,100,200), (100,100,255,200), (255,255,100,200)] # RGBA tints
-                tint_color = tint_colors[(i//2) % len(tint_colors)]
-                
-                color_layer = Image.new("RGBA", subject_region_original.size, tint_color)
-                # Blend the color layer with the subject using multiply or overlay could be interesting
-                # For a simple tint, we can just paste it with some alpha
-                # A more effective way might be to desaturate subject then colorize
-                alpha_blended_subject = Image.alpha_composite(subject_region_original, color_layer)
-
-                temp_canvas = base_img_rgba.copy()
-                temp_canvas.paste(alpha_blended_subject, region_bbox, alpha_blended_subject)
-                current_frame_canvas_rgba = temp_canvas
-            else:
-                pass # current_frame_canvas_rgba is already a copy of base_img_rgba
-        else: # Default: if animation_type is unknown or none
-            pass # current_frame_canvas_rgba is already a copy of base_img_rgba
-
-        # Convert final frame to RGB for GIF by pasting onto a white background
-        # This ensures consistency if some frames are RGBA and some RGB
-        final_frame_rgb = Image.new("RGB", current_frame_canvas_rgba.size, (255, 255, 255))
+        final_frame_rgb = Image.new("RGB", current_frame_canvas_rgba.size, (255, 255, 255)) 
         final_frame_rgb.paste(current_frame_canvas_rgba, mask=current_frame_canvas_rgba.split()[3] if current_frame_canvas_rgba.mode == 'RGBA' else None)
         frames.append(final_frame_rgb)
     return frames
@@ -189,13 +172,12 @@ FORBIDDEN_KEYWORDS = [
     "massacre", "stab", "shoot", "gun violence", "brutal", "maim", "corpse", "dead body", "funeral",
     "sex", "nude", "naked", "porn", "erotic", "explicit", "xxx", "sexual act", "genitals", "orgasm",
     "masturbation", "intercourse", "rape", "molest", "pedophile", "bestiality", "incest", "lust", "sperm", "vagina", "penis",
-    "nazi", "swastika", "kkk", "racist slur", "homophobic slur", "misogynist slur", "heil hitler", # Replace generic slurs with actual terms
+    "nazi", "swastika", "kkk", "racist slur", "homophobic slur", "misogynist slur", "heil hitler", 
     "white supremacy", "aryan", "ethnic cleansing", "genocide", "slave",
     "suicide", "self harm", "self-harm", "cutting", "overdose", "depressed", "anorexia", "bulimia", "depicting death",
     "drug making", "bomb making", "meth", "cocaine recipe", "heroin", "lsd", "illegal drugs",
     "child abuse", "child porn", "underage", "animal cruelty", "torturing animals",
-    "hate", "fuck", "shit", "bitch", "cunt", "asshole", "motherfucker", # Add common profanities cautiously
-    # Add more terms, consider variations, misspellings, leetspeak
+    "hate", "fuck", "shit", "bitch", "cunt", "asshole", "motherfucker", 
 ]
 
 # --- Flask Routes ---
@@ -204,7 +186,7 @@ def index():
     return render_template('index.html')
 
 @app.route('/generate-meme', methods=['POST'])
-def generate_static_meme_route():
+def generate_static_meme_route(): 
     if not HF_API_TOKEN:
         return jsonify({"error": "Oops! The meme magic is taking a nap. Please try again later."}), 503
 
@@ -266,10 +248,16 @@ def generate_animated_meme_route():
 
     try:
         num_animation_frames = 12
-        animation_duration_per_frame_ms = 83 # (1000ms / 12 frames = ~83.3ms) -> ~1 second GIF
+        animation_duration_per_frame_ms = 83 
 
-        available_animations = ["wiggle", "pulse_scale", "pulse_brightness", "center_jump"] # Removed "center_glow", "color_cycle_center" as they are more complex/less reliable for now
+        # For testing, you can fix the animation type.
+        # To make it random from a selection:
+        available_animations = ["wiggle", "rotate", "pulse_scale", "pulse_brightness", "center_jump"]
         animation_type_to_use = random.choice(available_animations)
+        # Or fix it for testing:
+        # animation_type_to_use = "wiggle" 
+        # animation_type_to_use = "rotate"
+
         print(f"Applying animation type: {animation_type_to_use}")
 
         animation_frames = create_simple_animation_frames(
@@ -327,7 +315,7 @@ if __name__ == '__main__':
         with open(COUNT_FILE, "w") as f: f.write(str(initial_count))
     except IOError as e:
         print(f"MEME COUNT (app.py): Error initializing count file '{COUNT_FILE}': {e}")
-        if COUNT_FILE_DIR != ".": # Fallback if persistent disk path failed
+        if COUNT_FILE_DIR != ".":
             print(f"MEME COUNT (app.py): Falling back to local directory for count file.")
             COUNT_FILE = "meme_count.txt" 
             try:
