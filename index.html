@@ -1,13 +1,43 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"> <!-- Specify language -->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🖍️ MEMEKING v1.0 - Get Your Coin & Make Memes!</title>
+
+    <!-- SEO: Title Tag - CRUCIAL -->
+    <title>MEMEKING: AI Meme Generator for Crypto & Meme Coins | Create Funny Memes</title>
+
+    <!-- SEO: Meta Description - CRUCIAL -->
+    <meta name="description" content="Unleash your creativity with MEMEKING, the ultimate AI meme generator for meme coin creators and crypto enthusiasts! Instantly generate hilarious, unique memes for your project, community, or just for fun. Get your $MKKG coin on Pump.fun!">
+
+    <!-- SEO: Keywords (Less impact now, but doesn't hurt in moderation) -->
+    <meta name="keywords" content="ai meme generator, meme coin, crypto memes, create memes, funny memes, MEMEKING, $MKKG, pump.fun, crypto community, meme token, AI image generator, Solana memes">
+
+    <!-- SEO: Canonical URL (If you have multiple URLs pointing to the same content, e.g. with/without www) -->
+    <!-- <link rel="canonical" href="https://your-memeking-app-name.onrender.com/" /> --> <!-- ACTION: Uncomment and set if deployed -->
+
+    <!-- SEO: Open Graph Tags (for social media sharing) -->
+    <meta property="og:title" content="MEMEKING: AI Meme Generator for Crypto & Meme Coins">
+    <meta property="og:description" content="Instantly generate hilarious, unique memes for your meme coin or crypto project with MEMEKING's AI power!">
+    <meta property="og:image" content="{{ url_for('static', filename='memeking_og_image.jpg') }}"> <!-- ACTION: Create a compelling OG image (e.g., 1200x630px) and name it memeking_og_image.jpg in your static folder -->
+    <meta property="og:url" content="https://your-memeking-app-name.onrender.com/"> <!-- ACTION: Replace with your live URL -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="MEMEKING">
+
+    <!-- SEO: Twitter Card Tags (for Twitter sharing) -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="MEMEKING: AI Meme Generator for Crypto & Meme Coins">
+    <meta name="twitter:description" content="Create viral crypto memes in seconds with MEMEKING's AI! Perfect for meme coin creators and communities.">
+    <meta name="twitter:image" content="{{ url_for('static', filename='memeking_twitter_card.jpg') }}"> <!-- ACTION: Create a Twitter card image (e.g., 800x418px or similar ratio) and name it memeking_twitter_card.jpg in your static folder -->
+    <!-- <meta name="twitter:site" content="@YourTwitterHandle"> --> <!-- ACTION: Uncomment and add your X/Twitter handle -->
+    <!-- <meta name="twitter:creator" content="@YourTwitterHandle"> --> <!-- ACTION: Uncomment and add your X/Twitter handle -->
+
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&family=Gaegu:wght@400;700&display=swap" rel="stylesheet">
     <style>
+        /* ... (Your existing CSS styles remain the same) ... */
         :root {
             --crayon-red: #EE204D;
             --crayon-blue: #1F75FE;
@@ -191,7 +221,7 @@
         footer {
             width: 100%; background-color: var(--crayon-black); color: var(--paper-bg);
             text-align: center; padding: 15px 0; font-family: 'Comic Neue', cursive;
-            font-size: 0.9em;
+            font-size: 0.9em; bottom: 0; left: 0;
             z-index: 10; border-top: 3px solid var(--crayon-yellow);
         }
 
@@ -209,42 +239,47 @@
 <body>
     <div class="page-wrapper">
         <!-- Hero Section -->
-        <section class="section-card hero-card">
-            <img src="{{ url_for('static', filename='memeking.jpg') }}" alt="MEMEKING Coin Logo" class="coin-logo">
-            <h1 class="main-title">MEMEKING!</h1>
-            <h2 class="section-title">Get Your Crayons Ready!</h2>
-            <p>This is <strong>MEMEKING ($MKKG - *example*)</strong>, the funnest coin for meme creators! <br>No boring charts, just pure meme magic!</p>
+        <section class="section-card hero-card" aria-labelledby="hero-title"> <!-- SEO: aria-labelledby for section landmark -->
+            <!-- SEO: Alt text for logo -->
+            <img src="{{ url_for('static', filename='memeking.jpg') }}" alt="MEMEKING Coin Crayon Style Logo" class="coin-logo">
+            <!-- SEO: h1 is the primary heading -->
+            <h1 id="hero-title" class="main-title">MEMEKING! AI Meme Generator</h1>
+            <!-- SEO: More descriptive h2 -->
+            <h2 class="section-title">Unleash Your Crypto Meme Creativity!</h2>
+            <p>This is <strong>MEMEKING ($MKKG - *example*)</strong>, the ultimate AI-powered meme generator for meme coin creators and the crypto community! <br>No boring charts, just pure, instant meme magic for your project or for fun!</p>
             <button id="buyCoinBtn" class="crayon-button" onclick="window.open('https://pump.fun/GT3CrepnC7YSB6quSBDYH9gMr7GYcKgUc4HzEoBxpump', '_blank')">
-                <span class="icon icon-rocket"></span> Grab $MKKG on Pump.fun!
+                <span class="icon icon-rocket"></span> Get $MKKG on Pump.fun!
             </button>
-            <p style="font-size: 0.9em; margin-top:10px;"><em>(V1.0 - Create freely, but play nice!)</em></p>
+            <p style="font-size: 0.9em; margin-top:10px;"><em>(V1.0 - Create freely, but play nice! Use our AI to make funny memes.)</em></p>
         </section>
 
         <!-- Meme Generator Section -->
-        <section class="section-card generator-card">
-            <h2 class="section-title">Make a Meme!</h2>
-            <p>Scribble your idea below & watch the AI magic happen!</p>
-            <textarea id="promptInput" placeholder="e.g., 'A red crayon drawing a blue dog on the moon'"></textarea>
+        <section class="section-card generator-card" aria-labelledby="generator-title">
+            <h2 id="generator-title" class="section-title">Make a Meme with AI!</h2>
+            <p>Scribble your meme idea below & our AI will bring your funny crypto meme to life in seconds!</p>
+            <!-- SEO: Label for textarea for accessibility -->
+            <label for="promptInput" style="display:none;">Meme Prompt</label> <!-- Visually hidden label -->
+            <textarea id="promptInput" placeholder="e.g., 'Solana coin character surfing on a rocket to the moon'" aria-label="Enter your meme prompt here"></textarea>
             <div class="action-buttons-container">
-                <button id="generateBtn"><span class="icon icon-wand"></span> Create!</button>
-                <button id="downloadBtn"><span class="icon icon-download"></span> Download</button>
-                <button id="clearBtn"><span class="icon icon-clear"></span> Clear</button>
+                <button id="generateBtn" aria-label="Generate Meme"><span class="icon icon-wand"></span> Create!</button>
+                <button id="downloadBtn" aria-label="Download Meme"><span class="icon icon-download"></span> Download</button>
+                <button id="clearBtn" aria-label="Clear Prompt and Image"><span class="icon icon-clear"></span> Clear</button>
             </div>
-            <div id="memeResultContainer">
-                <div class="loader" id="loader"></div>
-                <img id="memeImage" src="#" alt="Generated Meme"/>
-                <div id="errorMessage" class="message-display error-message"></div>
+            <div id="memeResultContainer" role="img" aria-live="polite" aria-label="Generated meme image will appear here"> <!-- SEO: aria-live for dynamic content -->
+                <div class="loader" id="loader" role="status" aria-label="Loading meme"></div>
+                <img id="memeImage" src="#" alt="Your AI Generated Meme" style="display:none;"/> <!-- SEO: Alt text for generated image -->
+                <div id="errorMessage" class="message-display error-message" role="alert"></div> <!-- SEO: role="alert" for errors -->
             </div>
-            <div class="meme-counter-display">Memes Created: <span id="memeCounter">Loading...</span></div>
+            <div class="meme-counter-display">AI Memes Created: <span id="memeCounter">Loading...</span></div>
         </section>
 
         <!-- Donation Section -->
-        <section class="section-card donation-card">
-             <h2 class="section-title">Support the Kingdom!</h2>
-            <p>Love MEMEKING? Help us brew more creative ideas & features! <br>Your support means the world (of memes)!</p>
+        <section class="section-card donation-card" aria-labelledby="donation-title">
+             <h2 id="donation-title" class="section-title">Support the MEMEKING Kingdom!</h2>
+            <p>Love MEMEKING's AI meme tool? Help us brew more creative ideas, funny features, and keep the crypto memes flowing! <br>Your support means the world (of memes)!</p>
             <div class="wallet-address-container">
                 <input type="text" value="3bZ8eZLM3ZQad399YDrhGJMXXLZaFMWAfLgkA3FPaHdf" id="donationWallet" readonly aria-label="Donation Wallet Address">
-                <button id="copyWalletBtn" class="crayon-button">
+                <button id="copyWalletBtn" class="crayon-button" aria-label="Copy Donation Wallet Address">
                     <span class="icon icon-copy"></span> Copy Addy
                 </button>
             </div>
@@ -252,14 +287,14 @@
         </section>
 
         <!-- Social Links Section -->
-        <section class="section-card social-card">
-            <h2 class="section-title">Join the Art Class!</h2>
-            <p>Hang out with other Meme Kings & Queens!</p>
+        <section class="section-card social-card" aria-labelledby="social-title">
+            <h2 id="social-title" class="section-title">Join Our Crypto Meme Community!</h2>
+            <p>Hang out with other Meme Kings & Queens! Follow our journey and get the latest updates for MEMEKING and $MKKG.</p>
             <div class="social-links-container">
-                <button class="crayon-button social-button x-btn" onclick="window.open('https://x.com/pillowgoldSOL', '_blank')">
+                <button class="crayon-button social-button x-btn" onclick="window.open('https://x.com/pillowgoldSOL', '_blank')" aria-label="Follow MEMEKING on X (Twitter)">
                     <span class="icon icon-x"></span> Follow on X
                 </button>
-                <button class="crayon-button social-button tg-btn" onclick="window.open('https://t.me/memekingforfun', '_blank')">
+                <button class="crayon-button social-button tg-btn" onclick="window.open('https://t.me/memekingforfun', '_blank')" aria-label="Join MEMEKING Telegram group">
                     <span class="icon icon-telegram"></span> Join Telegram
                 </button>
             </div>
@@ -267,14 +302,15 @@
     </div> <!-- End of page-wrapper -->
 
     <footer>
-        All rights reserved. <br>
-        <a href="{{ url_for('terms_page') }}" style="color: var(--crayon-yellow); text-decoration:none;">Terms & Conditions</a> |
-        <a href="{{ url_for('privacy_page') }}" style="color: var(--crayon-yellow); text-decoration:none;">Privacy Policy</a>
+        © 2025 All rights reserved. <br>
+        <a href="{{ url_for('terms_page') }}" style="color: var(--crayon-yellow); text-decoration:none;" rel="noopener">Terms & Conditions</a> |
+        <a href="{{ url_for('privacy_page') }}" style="color: var(--crayon-yellow); text-decoration:none;" rel="noopener">Privacy Policy</a>
     </footer>
 
     <script>
         // --- DOM Elements ---
         const promptInput = document.getElementById('promptInput');
+        // ... (rest of your JavaScript remains the same) ...
         const generateBtn = document.getElementById('generateBtn');
         const downloadBtn = document.getElementById('downloadBtn');
         const clearBtn = document.getElementById('clearBtn');
@@ -285,12 +321,11 @@
         const copyWalletBtn = document.getElementById('copyWalletBtn');
         const donationWalletInput = document.getElementById('donationWallet');
 
-        const FORBIDDEN_KEYWORDS_FRONTEND = [ // Client-side quick check, backend is authoritative
+        const FORBIDDEN_KEYWORDS_FRONTEND = [ 
             "kill", "murder", "rape", "torture", "gore", "blood", "explicit", "nude", "naked",
-            "sex", "porn", "xxx", "nazi", "racist", "hate" // Keep this shorter, backend has more
+            "sex", "porn", "xxx", "nazi", "racist", "hate" 
         ];
 
-        // --- Event Listeners ---
         generateBtn.addEventListener('click', handleGenerateMeme);
         downloadBtn.addEventListener('click', handleDownloadMeme);
         clearBtn.addEventListener('click', handleClearCreation);
@@ -298,16 +333,13 @@
              copyWalletBtn.addEventListener('click', handleCopyWalletAddress);
         }
 
-        // --- Functions ---
         async function handleGenerateMeme() {
             const promptText = promptInput.value.trim();
             const promptLower = promptText.toLowerCase();
 
-            // Client-side quick check for forbidden keywords
             for (const keyword of FORBIDDEN_KEYWORDS_FRONTEND) {
                 if (promptLower.includes(keyword)) {
                     displayMessage("Your prompt might contain sensitive words. We aim for fun, safe content. Please adjust your prompt.", 'error');
-                    // Reset button states if needed, similar to error handling in actual fetch
                     generateBtn.disabled = false;
                     clearBtn.disabled = false;
                     loader.style.display = 'none';
@@ -348,7 +380,6 @@
                     let errorMsg = "Uh oh! The AI crayons are stuck.";
                     try {
                         const errorData = await response.json();
-                        // If backend returned a specific error (like content policy violation), use that.
                         errorMsg = errorData.error || `Error ${response.status}: ${response.statusText}`;
                     } catch (e) {
                         errorMsg = `Error ${response.status}: ${response.statusText}. Try again!`;
@@ -425,7 +456,7 @@
                 }).catch(err => {
                     console.error('Failed to copy wallet address with navigator.clipboard: ', err);
                     try {
-                        document.execCommand('copy'); // Fallback
+                        document.execCommand('copy'); 
                         const originalText = copyWalletBtn.innerHTML;
                         copyWalletBtn.innerHTML = '<span class="icon icon-copy"></span> Copied!';
                         setTimeout(() => { copyWalletBtn.innerHTML = originalText; }, 2000);
@@ -433,7 +464,7 @@
                         alert('Oops, unable to copy. Please copy manually!');
                     }
                 });
-            } catch (err) { // Fallback if navigator.clipboard itself is undefined
+            } catch (err) { 
                  try {
                     document.execCommand('copy');
                     const originalText = copyWalletBtn.innerHTML;
@@ -445,10 +476,9 @@
             }
         }
 
-        // --- Initial Page Load ---
         document.addEventListener('DOMContentLoaded', () => {
             if(downloadBtn) downloadBtn.style.display = 'none';
-            fetchMemeCount();
+            fetchMmeCount();
         });
     </script>
 </body>
