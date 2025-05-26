@@ -5,32 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- SEO: Title Tag - CRUCIAL -->
-    <title>MEMEKING: AI Meme & GIF Generator for Crypto & Meme Coins | Create Funny Memes</title>
+    <title>MEMEKING: AI Meme & GIF Generator for Crypto & Meme Coins | Create Funny Memes & Transform Images</title> <!-- Updated Title -->
 
     <!-- SEO: Meta Description - CRUCIAL -->
-    <meta name="description" content="Unleash your creativity with MEMEKING, the ultimate AI meme and GIF generator for meme coin creators and crypto enthusiasts! Instantly generate hilarious, unique memes and short animated GIFs for your project, community, or just for fun. Get your $MKKG coin on Pump.fun!">
+    <meta name="description" content="Unleash your creativity with MEMEKING, the ultimate AI meme and GIF generator! Instantly generate hilarious memes, short animated GIFs, or transform your own images into funny emojis and GIFs. For meme coin creators, crypto enthusiasts, and fun-lovers. Get your $MKKG coin on Pump.fun!"> <!-- Updated Description -->
 
     <!-- SEO: Keywords (Less impact now, but doesn't hurt in moderation) -->
-    <meta name="keywords" content="ai meme generator, ai gif generator, animated memes, meme coin, crypto memes, create memes, funny memes, MEMEKING, $MKKG, pump.fun, crypto community, meme token, AI image generator, AI animation, Solana memes">
+    <meta name="keywords" content="ai meme generator, ai gif generator, animated memes, user image transform, image to emoji, image to gif, meme coin, crypto memes, create memes, funny memes, MEMEKING, $MKKG, pump.fun, crypto community, meme token, AI image generator, AI animation, Solana memes"> <!-- Updated Keywords -->
 
     <!-- SEO: Canonical URL (If you have multiple URLs pointing to the same content, e.g. with/without www) -->
     <!-- <link rel="canonical" href="https://your-memeking-app-name.onrender.com/" /> --> <!-- ACTION: Uncomment and set if deployed -->
 
     <!-- SEO: Open Graph Tags (for social media sharing) -->
-    <meta property="og:title" content="MEMEKING: AI Meme & GIF Generator for Crypto & Meme Coins">
-    <meta property="og:description" content="Instantly generate hilarious memes & short animated GIFs for your meme coin or crypto project with MEMEKING's AI power!">
-    <meta property="og:image" content="{{ url_for('static', filename='memeking_og_image.jpg') }}"> <!-- ACTION: Create a compelling OG image (e.g., 1200x630px) and name it memeking_og_image.jpg in your static folder -->
-    <meta property="og:url" content="https://memeking-app-v1.onrender.com/"> <!-- ACTION: Replace with your live URL -->
+    <meta property="og:title" content="MEMEKING: AI Meme & GIF Generator + Image Transformer">
+    <meta property="og:description" content="Instantly generate hilarious memes & short animated GIFs with AI, or transform your own images into fun emojis & GIFs with MEMEKING!">
+    <meta property="og:image" content="{{ url_for('static', filename='memeking_og_image.jpg') }}">
+    <meta property="og:url" content="https://memeking-app-v1.onrender.com/">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="MEMEKING">
 
     <!-- SEO: Twitter Card Tags (for Twitter sharing) -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="MEMEKING: AI Meme & GIF Generator">
-    <meta name="twitter:description" content="Create viral crypto memes and animated GIFs in seconds with MEMEKING's AI! Perfect for meme coin creators and communities.">
-    <meta name="twitter:image" content="{{ url_for('static', filename='memeking_twitter_card.jpg') }}"> <!-- ACTION: Create a Twitter card image (e.g., 800x418px or similar ratio) and name it memeking_twitter_card.jpg in your static folder -->
-    <meta name="twitter:site" content="@pillowgoldSOL"> <!-- ACTION: Updated with your X/Twitter handle -->
-    <meta name="twitter:creator" content="@pillowgoldSOL"> <!-- ACTION: Updated with your X/Twitter handle -->
+    <meta name="twitter:title" content="MEMEKING: AI Meme & GIF Generator + Image Transformer">
+    <meta name="twitter:description" content="Create viral crypto memes, animated GIFs in seconds with MEMEKING's AI, or transform your own pictures into awesome emojis/GIFs!">
+    <meta name="twitter:image" content="{{ url_for('static', filename='memeking_twitter_card.jpg') }}">
+    <meta name="twitter:site" content="@pillowgoldSOL">
+    <meta name="twitter:creator" content="@pillowgoldSOL">
 
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -72,6 +72,27 @@
         .section-card.generator-card p, .section-card.generator-card h2 { color: white; }
         .section-card.generator-card textarea::placeholder { color: rgba(255,255,255,0.7); }
         .section-card.generator-card textarea { border-color: white; color: white; background-color: rgba(0,0,0,0.2); }
+        /* New Card Style */
+        .section-card.transform-your-image-card { background-color: var(--crayon-purple); color: white; border-color: var(--crayon-yellow); box-shadow: 5px 5px 0px 0px var(--crayon-yellow); }
+        .section-card.transform-your-image-card p, .section-card.transform-your-image-card h2 { color: white; }
+        .section-card.transform-your-image-card .crayon-label { color: var(--crayon-yellow); display: block; margin-bottom: 5px; font-weight: bold; }
+        .section-card.transform-your-image-card .crayon-input-file, .section-card.transform-your-image-card .crayon-select {
+            border: 2px solid white; background-color: rgba(0,0,0,0.2); color: white; padding: 8px; border-radius: 8px; margin-bottom: 5px;
+            font-family: 'Comic Neue', cursive;
+        }
+        .section-card.transform-your-image-card .crayon-select { width: auto; min-width: 200px; }
+        .section-card.transform-your-image-card .radio-group label { margin-right: 15px; color:white; }
+        .section-card.transform-your-image-card .radio-group input[type="radio"] { margin-right: 5px; accent-color: var(--crayon-yellow); }
+        .section-card.transform-your-image-card small { color: rgba(255,255,255,0.8); display: block; font-size: 0.9em;}
+        .section-card.transform-your-image-card #transformedImageResultContainer { background-color: rgba(255,255,255,0.1); border: 2px dashed white;}
+        .section-card.transform-your-image-card #transformedImageDisplay { border: 3px solid white; box-shadow: 3px 3px 0px var(--crayon-yellow); }
+        .section-card.transform-your-image-card .error-message { background-color: var(--crayon-red); color: white; border: 2px solid white;}
+        .section-card.transform-your-image-card .loader { border: 5px solid rgba(0,0,0,0.2);
+            border-top-color: var(--crayon-yellow); border-right-color: var(--crayon-red);
+            border-bottom-color: var(--crayon-green); border-left-color: var(--crayon-orange);
+        }
+
+
         .section-card.social-card { background-color: var(--crayon-green); border-color: var(--crayon-purple); box-shadow: 5px 5px 0px 0px var(--crayon-purple); }
         .section-card.social-card p, .section-card.social-card h2 { color: white; }
         .section-card.donation-card { background-color: var(--crayon-orange); border-color: var(--crayon-red); box-shadow: 5px 5px 0px 0px var(--crayon-red); color: white;}
@@ -80,8 +101,10 @@
 
         .section-card:nth-child(1) { animation-delay: 0s; }
         .section-card:nth-child(2) { animation-delay: 0.15s; }
-        .section-card:nth-child(3) { animation-delay: 0.3s; }
+        .section-card:nth-child(3) { animation-delay: 0.3s; } /* New card here */
         .section-card:nth-child(4) { animation-delay: 0.45s; }
+        .section-card:nth-child(5) { animation-delay: 0.6s; }
+
 
         @keyframes drawIn {
             0% { opacity: 0; transform: translateY(20px) rotate(-2deg); }
@@ -95,7 +118,7 @@
         }
 
         h1.main-title {
-            font-family: 'Gaegu', cursive; color: var(--crayon-red); font-size: 4em;
+            font-family: 'Gaegu', cursive; color: var(--crayon-red); font-size: 3.8em; /* Adjusted for longer title */
             margin-bottom: 5px; line-height: 1; text-shadow: 2px 2px 0 var(--crayon-blue);
         }
 
@@ -105,6 +128,7 @@
         }
         .hero-card h2.section-title { color: var(--crayon-red); text-shadow: 1px 1px 0 var(--crayon-black); }
         .generator-card h2.section-title { color: var(--crayon-yellow); text-shadow: 1px 1px 0 var(--crayon-black); }
+        .transform-your-image-card h2.section-title { color: var(--crayon-yellow); text-shadow: 1px 1px 0 var(--crayon-black); }
         .social-card h2.section-title { color: var(--crayon-yellow); text-shadow: 1px 1px 0 var(--crayon-black); }
         .donation-card h2.section-title { color: var(--crayon-yellow); text-shadow: 1px 1px 0 var(--crayon-black); }
 
@@ -121,24 +145,27 @@
         textarea#promptInput:focus { outline: none; border-color: var(--crayon-orange); }
         .generator-card textarea#promptInput:focus { border-color: var(--crayon-yellow); }
 
-        button.crayon-button, button#generateBtn, button#generateGifBtn, button#downloadBtn, button#clearBtn, button#copyWalletBtn { /* Added #generateGifBtn */
-            font-family: 'Gaegu', cursive; font-size: 1.1em; font-weight: 700; /* Slightly smaller to fit more buttons */
-            color: var(--crayon-black); padding: 8px 15px; /* Slightly smaller padding */
+        button.crayon-button, button#generateBtn, button#generateGifBtn, button#downloadBtn, button#clearBtn, button#copyWalletBtn,
+        button#transformImageBtn, button#downloadTransformedBtn, button#clearTransformBtn { /* Added new button IDs */
+            font-family: 'Gaegu', cursive; font-size: 1.1em; font-weight: 700;
+            color: var(--crayon-black); padding: 8px 15px;
             border: 3px solid var(--crayon-black); border-radius: 10px; cursor: pointer;
             text-transform: uppercase; transition: all 0.2s ease;
             box-shadow: 3px 3px 0px 0px var(--crayon-black);
             display: inline-flex; align-items: center; gap: 8px; margin: 5px;
         }
-        button.crayon-button:hover, button#generateBtn:hover, button#generateGifBtn:hover, button#downloadBtn:hover, button#clearBtn:hover, button#copyWalletBtn:hover {
+        button.crayon-button:hover, button#generateBtn:hover, button#generateGifBtn:hover, button#downloadBtn:hover, button#clearBtn:hover, button#copyWalletBtn:hover,
+        button#transformImageBtn:hover, button#downloadTransformedBtn:hover, button#clearTransformBtn:hover {
             transform: translate(2px, 2px); box-shadow: 1px 1px 0px 0px var(--crayon-black);
         }
-        button.crayon-button:active, button#generateBtn:active, button#generateGifBtn:active, button#downloadBtn:active, button#clearBtn:active, button#copyWalletBtn:active {
+        button.crayon-button:active, button#generateBtn:active, button#generateGifBtn:active, button#downloadBtn:active, button#clearBtn:active, button#copyWalletBtn:active,
+        button#transformImageBtn:active, button#downloadTransformedBtn:active, button#clearTransformBtn:active {
             transform: translate(3px, 3px); box-shadow: 0px 0px 0px 0px var(--crayon-black);
         }
 
         /* Specific button colors */
         button#generateBtn { background-color: var(--crayon-yellow); border-color: var(--crayon-red); box-shadow: 3px 3px 0px 0px var(--crayon-red); }
-        button#generateGifBtn { background-color: var(--crayon-purple); color: white; border-color: var(--crayon-yellow); box-shadow: 3px 3px 0px 0px var(--crayon-yellow); } /* Style for GIF button */
+        button#generateGifBtn { background-color: var(--crayon-purple); color: white; border-color: var(--crayon-yellow); box-shadow: 3px 3px 0px 0px var(--crayon-yellow); }
         button#buyCoinBtn { background-color: var(--crayon-green); border-color: var(--crayon-blue); box-shadow: 3px 3px 0px 0px var(--crayon-blue); }
         .social-button.x-btn { background-color: var(--crayon-blue); border-color: var(--crayon-orange); box-shadow: 3px 3px 0px 0px var(--crayon-orange); color: white; }
         .social-button.tg-btn { background-color: var(--crayon-orange); border-color: var(--crayon-purple); box-shadow: 3px 3px 0px 0px var(--crayon-purple); color: white; }
@@ -146,26 +173,35 @@
         button#clearBtn { background-color: var(--crayon-red); color: white; border-color: var(--crayon-blue); box-shadow: 3px 3px 0px 0px var(--crayon-blue); }
         button#copyWalletBtn { background-color: var(--crayon-yellow); border-color: var(--crayon-black); box-shadow: 3px 3px 0px 0px var(--crayon-black); color: var(--crayon-black);}
 
+        /* New buttons for transform section */
+        button#transformImageBtn { background-color: var(--crayon-yellow); border-color: var(--crayon-red); box-shadow: 3px 3px 0px 0px var(--crayon-red); color: var(--crayon-black); }
+        button#downloadTransformedBtn { background-color: var(--crayon-green); color: white; border-color: var(--crayon-blue); box-shadow: 3px 3px 0px 0px var(--crayon-blue); display: none; }
+        button#clearTransformBtn { background-color: var(--crayon-red); color: white; border-color: var(--crayon-blue); box-shadow: 3px 3px 0px 0px var(--crayon-blue); }
+
+
         button:disabled {
             background-color: #ccc !important; color: #777 !important; border-color: #777 !important;
             box-shadow: 1px 1px 0px 0px #777 !important; cursor: not-allowed; transform: none !important;
         }
 
-        #memeResultContainer {
+        #memeResultContainer, #transformedImageResultContainer { /* Shared styles for result containers */
             margin-top: 20px; min-height: 200px; width: 100%;
             background-color: rgba(0,0,0,0.05); border-radius: 10px; border: var(--scribble-border);
             padding: 15px; display: flex; flex-direction: column;
             justify-content: center; align-items: center;
         }
         .generator-card #memeResultContainer { background-color: rgba(255,255,255,0.1); border: 2px dashed white;}
+        /* Style for transformed image display (max height, etc.) will be similar to memeImage */
 
-        img#memeImage {
+
+        img#memeImage, img#transformedImageDisplay { /* Shared styles for result images */
             max-width: 100%; max-height: 400px; border-radius: 8px;
             border: 3px solid var(--crayon-black); display: none;
             box-shadow: 3px 3px 0px var(--crayon-purple);
             animation: popInSimple 0.4s ease-out;
         }
         .generator-card img#memeImage { border: 3px solid white; box-shadow: 3px 3px 0px var(--crayon-yellow); }
+        /* .transform-your-image-card img#transformedImageDisplay is styled above */
 
         @keyframes popInSimple { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
@@ -179,6 +215,8 @@
             border-top-color: var(--crayon-yellow); border-right-color: var(--crayon-red);
             border-bottom-color: var(--crayon-green); border-left-color: var(--crayon-orange);
         }
+        /* .transform-your-image-card .loader is styled above */
+
 
         @keyframes crayonSpin { to { transform: rotate(360deg); } }
 
@@ -188,6 +226,8 @@
         }
         .error-message { color: var(--crayon-black); background-color: var(--crayon-red); }
         .generator-card .error-message { background-color: var(--crayon-red); color: white; border: 2px solid white;}
+        /* .transform-your-image-card .error-message is styled above */
+
 
         .meme-counter-display {
             font-family: 'Gaegu', cursive; font-size: 1.3em; font-weight: 700;
@@ -214,36 +254,44 @@
         .icon-x:before { content: "X"; }
         .icon-telegram:before { content: "✈️"; }
         .icon-wand:before { content: "✨"; }
-        .icon-gif:before { content: "🎬"; } /* New icon for GIF */
+        .icon-gif:before { content: "🎬"; }
         .icon-download:before { content: "💾"; }
         .icon-clear:before { content: "🗑️"; }
         .icon-copy:before { content: "📋"; }
+        .icon-upload:before { content: "🖼️"; } /* Icon for upload related things if needed */
+
 
         footer {
             width: 100%; background-color: var(--crayon-black); color: var(--paper-bg);
             text-align: center; padding: 15px 0; font-family: 'Comic Neue', cursive;
-            font-size: 0.9em; left: 0; /* No fixed Bottom */
+            font-size: 0.9em; left: 0;
             z-index: 10; border-top: 3px solid var(--crayon-yellow);
         }
 
-        @media (max-width: 768px) { /* Added a breakpoint for more buttons */
-             button.crayon-button, button#generateBtn, button#generateGifBtn, button#downloadBtn, button#clearBtn, button#copyWalletBtn {
-                 font-size: 1em; /* Slightly smaller for medium screens if many buttons */
+        @media (max-width: 768px) {
+             button.crayon-button, button#generateBtn, button#generateGifBtn, button#downloadBtn, button#clearBtn, button#copyWalletBtn,
+             button#transformImageBtn, button#downloadTransformedBtn, button#clearTransformBtn {
+                 font-size: 1em;
                  padding: 8px 12px;
              }
+             h1.main-title { font-size: 3.2em; }
         }
 
         @media (max-width: 600px) {
-            h1.main-title { font-size: 3em; }
+            h1.main-title { font-size: 2.5em; } /* Further adjust for long title */
             h2.section-title { font-size: 2em; }
             .section-card { padding: 20px; }
-            button.crayon-button, button#generateBtn, button#generateGifBtn, button#downloadBtn, button#clearBtn, button#copyWalletBtn {
-                font-size: 0.9em; /* Even smaller for small screens */
+            button.crayon-button, button#generateBtn, button#generateGifBtn, button#downloadBtn, button#clearBtn, button#copyWalletBtn,
+            button#transformImageBtn, button#downloadTransformedBtn, button#clearTransformBtn {
+                font-size: 0.9em;
                 padding: 8px 10px;
             }
             .wallet-address-container input[type="text"] { font-size: 0.8em; max-width: 250px;}
-            .page-wrapper { padding-bottom: 120px; } /* More space if footer text wraps */
+            .page-wrapper { padding-bottom: 120px; }
             .coin-logo { max-width: 80px; max-height: 80px;}
+            .section-card.transform-your-image-card .crayon-select { width: 100%;} /* Full width select on mobile */
+            .section-card.transform-your-image-card .radio-group { display: flex; flex-direction: column; align-items: flex-start; gap: 5px; }
+            .section-card.transform-your-image-card .radio-group label { margin-right: 0; }
         }
     </style>
 </head>
@@ -252,18 +300,18 @@
         <!-- Hero Section -->
         <section class="section-card hero-card" aria-labelledby="hero-title">
             <img src="{{ url_for('static', filename='memeking.jpg') }}" alt="MEMEKING Coin Crayon Style Logo" class="coin-logo">
-            <h1 id="hero-title" class="main-title">MEMEKING! AI Meme & GIF Generator</h1>
+            <h1 id="hero-title" class="main-title">MEMEKING! AI Meme, GIF & Image Transformer!</h1>
             <h2 class="section-title">Unleash Your Crypto Meme Creativity!</h2>
-            <p>This is <strong>MEMEKING ($MKKG - *example*)</strong>, the ultimate AI-powered meme and GIF generator for meme coin creators and the crypto community! <br>No boring charts, just pure, instant meme magic for your project or for fun!</p>
+            <p>This is <strong>MEMEKING ($MKKG - *example*)</strong>, the ultimate AI-powered meme and GIF generator, and now an image transformer! <br>No boring charts, just pure, instant meme magic for your project or for fun!</p>
             <button id="buyCoinBtn" class="crayon-button" onclick="window.open('https://pump.fun/GT3CrepnC7YSB6quSBDYH9gMr7GYcKgUc4HzEoBxpump', '_blank')">
                 <span class="icon icon-rocket"></span> Get $MKKG on Pump.fun!
             </button>
-            <p style="font-size: 0.9em; margin-top:10px;"><em>(V1.1 - Now with Animated GIF Memes! Create freely, but play nice.)</em></p>
+            <p style="font-size: 0.9em; margin-top:10px;"><em>(V1.2 - Now Transform Your Own Images! Create freely, but play nice.)</em></p>
         </section>
 
-        <!-- Meme Generator Section -->
+        <!-- Meme Generator Section (Existing) -->
         <section class="section-card generator-card" aria-labelledby="generator-title">
-            <h2 id="generator-title" class="section-title">Make a Meme or GIF!</h2>
+            <h2 id="generator-title" class="section-title">Make a Meme or GIF from Text!</h2>
             <p>Scribble your idea below & our AI will bring your funny crypto creation to life!</p>
             <label for="promptInput" style="display:none;">Meme/GIF Prompt</label>
             <textarea id="promptInput" placeholder="e.g., 'Solana coin character surfing on a rocket to the moon'" aria-label="Enter your meme or GIF prompt here"></textarea>
@@ -287,7 +335,71 @@
             <div class="meme-counter-display">Creations Made: <span id="memeCounter">Loading...</span></div>
         </section>
 
-        <!-- Donation Section -->
+        <!-- User Image Transformation Section (NEW) -->
+        <section class="section-card transform-your-image-card" aria-labelledby="transform-title">
+            <h2 id="transform-title" class="section-title">Transform Your Own Image!</h2>
+            <p>Upload your picture and turn it into a fun emoji or a cool animated GIF!</p>
+
+            <form id="userImageTransformForm" style="margin-top:15px;">
+                <div style="margin-bottom: 15px;">
+                    <label for="userImageUploadInput" class="crayon-label">1. Choose Your Image:</label>
+                    <input type="file" id="userImageUploadInput" name="image_file" accept="image/png, image/jpeg, image/gif" class="crayon-input-file" required>
+                    <small>Max 5MB. PNG, JPG, GIF accepted.</small>
+                </div>
+
+                <div style="margin-bottom: 15px;">
+                    <label class="crayon-label">2. Choose Transformation:</label>
+                    <div class="radio-group">
+                        <input type="radio" id="transformTypeEmoji" name="transform_type_user" value="emoji" checked> <!-- Changed name to avoid conflict -->
+                        <label for="transformTypeEmoji">Funny Emoji</label>
+                        <input type="radio" id="transformTypeGif" name="transform_type_user" value="gif">
+                        <label for="transformTypeGif">Animated GIF</label>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 15px;" id="userEmojiEffectsContainer">
+                    <label for="userEmojiEffectSelect" class="crayon-label">Emoji Effect:</label>
+                    <select id="userEmojiEffectSelect" name="effect_emoji_user" class="crayon-select">
+                        <option value="cartoon" selected>Cartoon Style</option>
+                        <option value="zoom_center">Zoom In Center</option>
+                        <!-- Add more user emoji effects here if backend supports -->
+                    </select>
+                </div>
+
+                <div style="margin-bottom: 15px; display: none;" id="userGifEffectsContainer">
+                    <label for="userGifEffectSelect" class="crayon-label">GIF Animation:</label>
+                    <select id="userGifEffectSelect" name="effect_gif_user" class="crayon-select">
+                        <option value="wiggle" selected>Wiggle</option>
+                        <option value="rotate">Rotate</option>
+                        <option value="pulse_scale">Pulse Scale</option>
+                        <option value="pulse_brightness">Pulse Brightness</option>
+                        <option value="center_jump">Center Jump</option>
+                         <!-- Add more user gif effects here if backend supports -->
+                    </select>
+                </div>
+
+                <div class="action-buttons-container" style="margin-top: 20px;">
+                    <button type="submit" id="transformImageBtn" class="crayon-button">
+                        <span class="icon icon-wand"></span> Transform It!
+                    </button>
+                    <button type="button" id="downloadTransformedBtn" class="crayon-button" style="display:none;" aria-label="Download Transformed Image">
+                        <span class="icon icon-download"></span> Download
+                    </button>
+                    <button type="button" id="clearTransformBtn" class="crayon-button" aria-label="Clear Uploaded Image and Result">
+                        <span class="icon icon-clear"></span> Clear
+                    </button>
+                </div>
+            </form>
+
+            <div id="transformedImageResultContainer" role="img" aria-live="polite" aria-label="Transformed image or GIF will appear here">
+                <div class="loader" id="transformLoader" role="status" aria-label="Loading transformed image"></div>
+                <img id="transformedImageDisplay" src="#" alt="Your Transformed Image"/>
+                <div id="transformErrorMessage" class="message-display error-message" role="alert"></div>
+            </div>
+        </section>
+
+
+        <!-- Donation Section (Existing) -->
         <section class="section-card donation-card" aria-labelledby="donation-title">
              <h2 id="donation-title" class="section-title">Support the MEMEKING Kingdom!</h2>
             <p>Love MEMEKING's AI meme tool? Help us brew more creative ideas, funny features, and keep the crypto memes flowing! <br>Your support means the world (of memes)!</p>
@@ -300,7 +412,7 @@
             <p style="font-size:0.9em; margin-top:10px;">(Network: Solana)</p>
         </section>
 
-        <!-- Social Links Section -->
+        <!-- Social Links Section (Existing) -->
         <section class="section-card social-card" aria-labelledby="social-title">
             <h2 id="social-title" class="section-title">Join Our Crypto Meme Community!</h2>
             <p>Hang out with other Meme Kings & Queens! Follow our journey and get the latest updates for MEMEKING and $MKKG.</p>
@@ -316,46 +428,75 @@
     </div> <!-- End of page-wrapper -->
 
     <footer>
-        © <span id="currentYear">2025</span> All rights reserved. <br> <!-- Dynamic Year -->
+        © <span id="currentYear">2025</span> All rights reserved. <br>
         <a href="{{ url_for('terms_page') }}" style="color: var(--crayon-yellow); text-decoration:none;" rel="noopener">Terms & Conditions</a> |
         <a href="{{ url_for('privacy_page') }}" style="color: var(--crayon-yellow); text-decoration:none;" rel="noopener">Privacy Policy</a>
     </footer>
 
     <script>
-        // --- DOM Elements ---
+        // --- DOM Elements for AI Meme/GIF Generator ---
         const promptInput = document.getElementById('promptInput');
         const generateBtn = document.getElementById('generateBtn');
-        const generateGifBtn = document.getElementById('generateGifBtn'); // New button
+        const generateGifBtn = document.getElementById('generateGifBtn');
         const downloadBtn = document.getElementById('downloadBtn');
         const clearBtn = document.getElementById('clearBtn');
         const memeImage = document.getElementById('memeImage');
         const loader = document.getElementById('loader');
         const errorMessageDiv = document.getElementById('errorMessage');
         const memeCounterSpan = document.getElementById('memeCounter');
+
+        // --- DOM Elements for User Image Transformation ---
+        const userImageTransformForm = document.getElementById('userImageTransformForm');
+        const userImageUploadInput = document.getElementById('userImageUploadInput');
+        const transformTypeEmojiRadio = document.getElementById('transformTypeEmoji');
+        const transformTypeGifRadio = document.getElementById('transformTypeGif');
+        const userEmojiEffectsContainer = document.getElementById('userEmojiEffectsContainer');
+        const userGifEffectsContainer = document.getElementById('userGifEffectsContainer');
+        const userEmojiEffectSelect = document.getElementById('userEmojiEffectSelect');
+        const userGifEffectSelect = document.getElementById('userGifEffectSelect');
+        const transformImageBtn = document.getElementById('transformImageBtn');
+        const downloadTransformedBtn = document.getElementById('downloadTransformedBtn');
+        const clearTransformBtn = document.getElementById('clearTransformBtn');
+        const transformedImageDisplay = document.getElementById('transformedImageDisplay');
+        const transformLoader = document.getElementById('transformLoader');
+        const transformErrorMessageDiv = document.getElementById('transformErrorMessage');
+
+
+        // --- DOM Elements for Other Features ---
         const copyWalletBtn = document.getElementById('copyWalletBtn');
         const donationWalletInput = document.getElementById('donationWallet');
         const currentYearSpan = document.getElementById('currentYear');
 
-
-        const FORBIDDEN_KEYWORDS_FRONTEND = [ 
+        // --- Configuration ---
+        const FORBIDDEN_KEYWORDS_FRONTEND = [
             "kill", "murder", "rape", "torture", "gore", "blood", "explicit", "nude", "naked",
-            "sex", "porn", "xxx", "nazi", "racist", "hate" 
+            "sex", "porn", "xxx", "nazi", "racist", "hate"
         ];
+        const ALLOWED_UPLOAD_EXTENSIONS = ['png', 'jpg', 'jpeg', 'gif'];
+        const MAX_UPLOAD_SIZE_BYTES = 5 * 1024 * 1024; // 5MB
 
-        // --- Event Listeners ---
+        // --- Event Listeners for AI Meme/GIF Generator ---
         if (generateBtn) generateBtn.addEventListener('click', () => handleGenerateCreation('/generate-meme', 'Image Meme'));
         if (generateGifBtn) generateGifBtn.addEventListener('click', () => handleGenerateCreation('/generate-animated-meme', 'Animated GIF'));
-        
-        if (downloadBtn) downloadBtn.addEventListener('click', handleDownloadMeme); // Will be updated by handleGenerateCreation
+        if (downloadBtn) downloadBtn.addEventListener('click', () => handleDownloadMeme(memeImage.src, `memeking_ai_creation_${Date.now()}.png`)); // Default, updated by success
         if (clearBtn) clearBtn.addEventListener('click', handleClearCreation);
+
+        // --- Event Listeners for User Image Transformation ---
+        if (transformTypeEmojiRadio) transformTypeEmojiRadio.addEventListener('change', toggleUserEffectSelectors);
+        if (transformTypeGifRadio) transformTypeGifRadio.addEventListener('change', toggleUserEffectSelectors);
+        if (userImageTransformForm) userImageTransformForm.addEventListener('submit', handleUserImageTransform);
+        if (downloadTransformedBtn) downloadTransformedBtn.addEventListener('click', () => handleDownloadMeme(transformedImageDisplay.src, `memeking_transformed_${Date.now()}.png`)); // Default, updated on success
+        if (clearTransformBtn) clearTransformBtn.addEventListener('click', handleClearUserTransform);
+
+
+        // --- Event Listeners for Other Features ---
         if (copyWalletBtn) copyWalletBtn.addEventListener('click', handleCopyWalletAddress);
 
-        // --- Generic Handler for Creation ---
+        // --- AI Meme/GIF Generation Functions ---
         async function handleGenerateCreation(endpointUrl, creationType) {
-            // Null checks for critical elements used within this function
             if (!promptInput || !loader || !errorMessageDiv || !memeImage || !downloadBtn || !clearBtn || (!generateBtn && !generateGifBtn)) {
-                console.error("One or more essential UI elements are missing for generation.");
-                displayMessage("Oops! Something's not right with the page setup. Please refresh.", "error");
+                console.error("One or more essential UI elements are missing for AI generation.");
+                displayMessage("Oops! Something's not right with the page setup. Please refresh.", "error", errorMessageDiv);
                 return;
             }
 
@@ -364,7 +505,7 @@
 
             for (const keyword of FORBIDDEN_KEYWORDS_FRONTEND) {
                 if (promptLower.includes(keyword)) {
-                    displayMessage(`Your prompt for the ${creationType} might contain sensitive words. Please adjust your prompt.`, 'error');
+                    displayMessage(`Your prompt for the ${creationType} might contain sensitive words. Please adjust your prompt.`, 'error', errorMessageDiv);
                     if (generateBtn) generateBtn.disabled = false;
                     if (generateGifBtn) generateGifBtn.disabled = false;
                     if (clearBtn) clearBtn.disabled = false;
@@ -376,7 +517,7 @@
             }
 
             if (!promptText) {
-                displayMessage(`Hey! You need to write an idea for your ${creationType} drawing!`, 'error');
+                displayMessage(`Hey! You need to write an idea for your ${creationType} drawing!`, 'error', errorMessageDiv);
                 return;
             }
 
@@ -384,13 +525,12 @@
             downloadBtn.style.display = 'none';
             errorMessageDiv.style.display = 'none';
             loader.style.display = 'block';
-            
+
             if (generateBtn) generateBtn.disabled = true;
             if (generateGifBtn) generateGifBtn.disabled = true;
             clearBtn.disabled = true;
 
             let clickedButton = (endpointUrl === '/generate-meme') ? generateBtn : generateGifBtn;
-            let originalButtonText = clickedButton ? clickedButton.innerHTML : "";
             if (clickedButton) clickedButton.innerHTML = `<span class="icon icon-wand"></span> Conjuring ${creationType}...`;
 
             try {
@@ -406,58 +546,25 @@
                     memeImage.src = creationUrl;
                     memeImage.style.display = 'block';
                     memeImage.alt = `Your AI Generated ${creationType}`;
-                    
-                    downloadBtn.style.display = 'inline-flex';
-                    const extension = (creationType === 'Animated GIF') ? 'gif' : 'png'; // Default to png for static
-                    const downloadFilename = `memeking_${creationType.toLowerCase().replace(/\s+/g, '_')}_${Date.now()}.${extension}`;
-                    // Update the download button's click handler directly with new URL and filename
-                    downloadBtn.onclick = () => handleDownloadMeme(creationUrl, downloadFilename);
 
+                    downloadBtn.style.display = 'inline-flex';
+                    const extension = (creationType === 'Animated GIF') ? 'gif' : 'png';
+                    const downloadFilename = `memeking_ai_${creationType.toLowerCase().replace(/\s+/g, '_')}_${Date.now()}.${extension}`;
+                    downloadBtn.onclick = () => handleDownloadMeme(creationUrl, downloadFilename);
                     fetchMemeCount();
                 } else {
                     let errorMsg = `Uh oh! The AI crayons are stuck for your ${creationType}.`;
-                    try {
-                        const errorData = await response.json();
-                        errorMsg = errorData.error || `Error ${response.status}: ${response.statusText}`;
-                    } catch (e) {
-                        errorMsg = `Error ${response.status}: ${response.statusText}. Try again!`;
-                    }
-                    displayMessage(errorMsg, 'error');
+                    try { const errorData = await response.json(); errorMsg = errorData.error || `Error ${response.status}: ${response.statusText}`; }
+                    catch (e) { errorMsg = `Error ${response.status}: ${response.statusText}. Try again!`; }
+                    displayMessage(errorMsg, 'error', errorMessageDiv);
                 }
             } catch (error) {
-                displayMessage(`Oops! Network scribbles for your ${creationType}. Check connection.`, 'error');
+                displayMessage(`Oops! Network scribbles for your ${creationType}. Check connection.`, 'error', errorMessageDiv);
             } finally {
                 if(loader) loader.style.display = 'none';
                 if (generateBtn) { generateBtn.disabled = false; generateBtn.innerHTML = '<span class="icon icon-wand"></span> Image Meme!';}
                 if (generateGifBtn) { generateGifBtn.disabled = false; generateGifBtn.innerHTML = '<span class="icon icon-gif"></span> Animated GIF!';}
                 if (clearBtn) clearBtn.disabled = false;
-            }
-        }
-
-        function handleDownloadMeme(urlToDownload, desiredFilename) {
-            // This function is now primarily called with specific args from handleGenerateCreation's downloadBtn.onclick
-            if (urlToDownload && desiredFilename) {
-                const link = document.createElement('a');
-                link.href = urlToDownload;
-                link.download = desiredFilename;
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-            } else {
-                // Fallback or error if called unexpectedly without args
-                console.warn("handleDownloadMeme called without proper arguments. Attempting to use current memeImage if available.");
-                if (memeImage && memeImage.src && memeImage.src !== '#' && memeImage.style.display !== 'none') {
-                     const link = document.createElement('a');
-                     link.href = memeImage.src;
-                     // Guess extension - less reliable
-                     const isGif = memeImage.src.includes("blob:") ? (memeImage.alt.includes("GIF") ? true : false) : memeImage.src.endsWith('.gif');
-                     link.download = `memeking_creation_${Date.now()}.${isGif ? 'gif' : 'png'}`;
-                     document.body.appendChild(link);
-                     link.click();
-                     document.body.removeChild(link);
-                } else {
-                    displayMessage("No creation to download yet!", "error");
-                }
             }
         }
 
@@ -471,13 +578,140 @@
             if(generateGifBtn) {generateGifBtn.disabled = false; generateGifBtn.innerHTML = '<span class="icon icon-gif"></span> Animated GIF!';}
         }
 
-        function displayMessage(message, type = 'error') {
-            if (!errorMessageDiv) return;
-            errorMessageDiv.textContent = message;
-            errorMessageDiv.style.display = 'block';
+        // --- User Image Transformation Functions ---
+        function toggleUserEffectSelectors() {
+            if (!userEmojiEffectsContainer || !userGifEffectsContainer) return;
+            if (transformTypeEmojiRadio && transformTypeEmojiRadio.checked) {
+                userEmojiEffectsContainer.style.display = 'block';
+                userGifEffectsContainer.style.display = 'none';
+            } else if (transformTypeGifRadio && transformTypeGifRadio.checked) {
+                userEmojiEffectsContainer.style.display = 'none';
+                userGifEffectsContainer.style.display = 'block';
+            }
+        }
+
+        async function handleUserImageTransform(event) {
+            event.preventDefault(); // Prevent default form submission
+
+            if (!userImageUploadInput || !transformLoader || !transformErrorMessageDiv || !transformedImageDisplay || !downloadTransformedBtn || !transformImageBtn || !clearTransformBtn) {
+                console.error("One or more essential UI elements are missing for user image transformation.");
+                displayMessage("Oops! Page setup error for image transform. Please refresh.", "error", transformErrorMessageDiv);
+                return;
+            }
+
+            const imageFile = userImageUploadInput.files[0];
+
+            if (!imageFile) {
+                displayMessage("Please choose an image file first!", "error", transformErrorMessageDiv);
+                return;
+            }
+
+            const fileExtension = imageFile.name.split('.').pop().toLowerCase();
+            if (!ALLOWED_UPLOAD_EXTENSIONS.includes(fileExtension)) {
+                displayMessage(`Invalid file type. Please upload: ${ALLOWED_UPLOAD_EXTENSIONS.join(', ')}.`, "error", transformErrorMessageDiv);
+                return;
+            }
+
+            if (imageFile.size > MAX_UPLOAD_SIZE_BYTES) {
+                displayMessage(`File is too large! Max size is ${MAX_UPLOAD_SIZE_BYTES / (1024*1024)}MB.`, "error", transformErrorMessageDiv);
+                return;
+            }
+
+            transformedImageDisplay.style.display = 'none'; transformedImageDisplay.src = '#';
+            downloadTransformedBtn.style.display = 'none';
+            transformErrorMessageDiv.style.display = 'none';
+            transformLoader.style.display = 'block';
+            transformImageBtn.disabled = true;
+            clearTransformBtn.disabled = true;
+            transformImageBtn.innerHTML = '<span class="icon icon-wand"></span> Transforming...';
+
+            const formData = new FormData();
+            formData.append('image_file', imageFile);
+
+            const transformType = transformTypeEmojiRadio.checked ? 'emoji' : 'gif';
+            formData.append('transform_type', transformType);
+
+            const effect = transformType === 'emoji' ? userEmojiEffectSelect.value : userGifEffectSelect.value;
+            formData.append('effect', effect);
+
+            try {
+                const response = await fetch('/upload-and-transform', {
+                    method: 'POST',
+                    body: formData // No 'Content-Type' header for FormData, browser sets it
+                });
+
+                if (response.ok) {
+                    const imageBlob = await response.blob();
+                    const imageUrl = URL.createObjectURL(imageBlob);
+                    transformedImageDisplay.src = imageUrl;
+                    transformedImageDisplay.style.display = 'block';
+                    transformedImageDisplay.alt = `Your transformed ${transformType}`;
+
+                    downloadTransformedBtn.style.display = 'inline-flex';
+                    const outputExtension = transformType === 'gif' ? 'gif' : 'png';
+                    const downloadFilename = `memeking_transformed_${transformType}_${effect}_${Date.now()}.${outputExtension}`;
+                    downloadTransformedBtn.onclick = () => handleDownloadMeme(imageUrl, downloadFilename);
+                    // Optionally, fetch a different counter or just rely on the main one
+                    // fetchMemeCount();
+                } else {
+                    let errorMsg = `Failed to transform your image.`;
+                    try { const errorData = await response.json(); errorMsg = errorData.error || `Error ${response.status}: ${response.statusText}`; }
+                    catch (e) { errorMsg = `Error ${response.status}: ${response.statusText}. The server might be busy or the image is tricky.`; }
+                    displayMessage(errorMsg, 'error', transformErrorMessageDiv);
+                }
+
+            } catch (error) {
+                console.error("Error during user image transform:", error);
+                displayMessage("Network error or server issue during image transformation. Please try again.", "error", transformErrorMessageDiv);
+            } finally {
+                transformLoader.style.display = 'none';
+                transformImageBtn.disabled = false;
+                clearTransformBtn.disabled = false;
+                transformImageBtn.innerHTML = '<span class="icon icon-wand"></span> Transform It!';
+            }
+        }
+
+        function handleClearUserTransform() {
+            if(userImageUploadInput) userImageUploadInput.value = null; // Clears the file input
+            if(transformedImageDisplay) { transformedImageDisplay.style.display = 'none'; transformedImageDisplay.src = '#'; }
+            if(downloadTransformedBtn) downloadTransformedBtn.style.display = 'none';
+            if(transformErrorMessageDiv) transformErrorMessageDiv.style.display = 'none';
+            if(transformLoader) transformLoader.style.display = 'none';
+            if(transformImageBtn) { transformImageBtn.disabled = false; transformImageBtn.innerHTML = '<span class="icon icon-wand"></span> Transform It!';}
+            // Reset radio buttons and selects to default if desired
+            if(transformTypeEmojiRadio) transformTypeEmojiRadio.checked = true;
+            toggleUserEffectSelectors(); // To show correct effect dropdown
+        }
+
+
+        // --- Common & Utility Functions ---
+        function handleDownloadMeme(urlToDownload, desiredFilename) {
+            if (urlToDownload && desiredFilename && urlToDownload !== '#' && !urlToDownload.startsWith('http://localhost')) { // check if src is valid
+                const link = document.createElement('a');
+                link.href = urlToDownload;
+                link.download = desiredFilename;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                // URL.revokeObjectURL(urlToDownload); // Good practice for blob URLs if you're done with them
+            } else {
+                const activeErrorDiv = transformedImageDisplay.style.display !== 'none' ? transformErrorMessageDiv : errorMessageDiv;
+                displayMessage("No valid creation to download yet!", "error", activeErrorDiv);
+            }
+        }
+
+        function displayMessage(message, type = 'error', targetDiv) {
+            if (!targetDiv) return;
+            targetDiv.textContent = message;
+            targetDiv.className = `message-display ${type}-message`; // Ensure class is set for styling
+            targetDiv.style.display = 'block';
+
+            const imageToHide = targetDiv === transformErrorMessageDiv ? transformedImageDisplay : memeImage;
+            const downloadToHide = targetDiv === transformErrorMessageDiv ? downloadTransformedBtn : downloadBtn;
+
             if (type === 'error') {
-                if (memeImage) memeImage.style.display = 'none';
-                if (downloadBtn) downloadBtn.style.display = 'none';
+                if (imageToHide) imageToHide.style.display = 'none';
+                if (downloadToHide) downloadToHide.style.display = 'none';
             }
         }
 
@@ -508,31 +742,33 @@
                     setTimeout(() => { copyWalletBtn.innerHTML = originalText; }, 2000);
                 }).catch(err => {
                     console.error('Failed to copy wallet address with navigator.clipboard: ', err);
-                    try {
-                        document.execCommand('copy'); 
+                    try { // Fallback for older browsers
+                        document.execCommand('copy');
                         const originalText = copyWalletBtn.innerHTML;
                         copyWalletBtn.innerHTML = '<span class="icon icon-copy"></span> Copied!';
                         setTimeout(() => { copyWalletBtn.innerHTML = originalText; }, 2000);
-                    } catch (errFallback) {
-                        alert('Oops, unable to copy. Please copy manually!');
-                    }
+                    } catch (errFallback) { alert('Oops, unable to copy. Please copy manually!'); }
                 });
-            } catch (err) { 
+            } catch (err) { // General fallback
                  try {
                     document.execCommand('copy');
                     const originalText = copyWalletBtn.innerHTML;
                     copyWalletBtn.innerHTML = '<span class="icon icon-copy"></span> Copied!';
                     setTimeout(() => { copyWalletBtn.innerHTML = originalText; }, 2000);
-                } catch (errFallback) {
-                    alert('Oops, unable to copy. Please copy manually!');
-                }
+                } catch (errFallback) { alert('Oops, unable to copy. Please copy manually!'); }
             }
         }
 
+        // --- Initialization on DOMContentLoaded ---
         document.addEventListener('DOMContentLoaded', () => {
             if(downloadBtn) downloadBtn.style.display = 'none';
+            if(downloadTransformedBtn) downloadTransformedBtn.style.display = 'none';
             fetchMemeCount();
-            if(currentYearSpan) currentYearSpan.textContent = new Date().getFullYear(); // Update copyright year
+            if(currentYearSpan) currentYearSpan.textContent = new Date().getFullYear();
+            toggleUserEffectSelectors(); // Initialize correct effect dropdown visibility
+            // Ensure all result images are hidden initially
+            if (memeImage) memeImage.style.display = 'none';
+            if (transformedImageDisplay) transformedImageDisplay.style.display = 'none';
         });
     </script>
 </body>
